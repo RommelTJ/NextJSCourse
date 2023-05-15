@@ -14,3 +14,12 @@ on the server, or a mix of both.
     * Static Site Generation
     * Server Side Rendering
     * Incremental Site Regeneration
+  * Performance
+    * Code splitting
+      * Divide your web app in small chunks, so you only load the chunk that is used by the current page
+    * Minifying files
+      * NextJS does it for you
+    * Image Optimization
+      * NextImage will automatically optimize images
+    * Pre-fetching assets
+      * NextJS will only prefetch assets as you scroll down the page.
