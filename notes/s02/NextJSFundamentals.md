@@ -23,3 +23,9 @@ on the server, or a mix of both.
       * NextImage will automatically optimize images
     * Pre-fetching assets
       * NextJS will only prefetch assets as you scroll down the page.
+  * File-based routing
+    * Every next.js app has a pages directory, and any file in the pages directory is route
+    * You don't need to install additional packages to handle routes
+  * SEO
+    * Search engine optimization
+    * NextJS allows you the ability to add SEO-friendly features to your site (ex NextHead)
