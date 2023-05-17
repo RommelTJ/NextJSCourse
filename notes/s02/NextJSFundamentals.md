@@ -37,3 +37,15 @@ on the server, or a mix of both.
       * Wake up the server
       * Execute the function
       * On completion, shutdowns automatically
+
+## Why is NextJS Popular?
+
+* Strong developer community
+* Takes care of complexity for you
+* With Create React App, you have to add many packages, grasp domain knowledge (like SEO), lots of configuration, etc
+* With Create React App, you need to know how webpack works. Not so with NextJS.
+* You can still learn the concepts later while reducing decision fatigue.
+* Rendering techniques are easy to set up. You can pick and choose which rendering technique to do for which page.
+* Create React App might be preferable for a very simple application. NextJS is very opinionated.
+* NextJS requires you to know its opinionated choices.
+* NextJS is a React framework for production.
