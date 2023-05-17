@@ -29,3 +29,11 @@ on the server, or a mix of both.
   * SEO
     * Search engine optimization
     * NextJS allows you the ability to add SEO-friendly features to your site (ex NextHead)
+  * Serverless functions
+    * Everything under the API folder has a node server configured automatically
+      * Ex: /api/hello.js, hello.js would be a serverless function
+    * This allows you to execute code on the server, not on the client
+    * When you call a serverless function, it does the following: 
+      * Wake up the server
+      * Execute the function
+      * On completion, shutdowns automatically
