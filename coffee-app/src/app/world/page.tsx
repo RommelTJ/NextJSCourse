@@ -1,5 +1,7 @@
+import styles from "./styles.module.css";
+
 const World = () => {
-  return <div>Hello Page...</div>;
+  return <div className={styles.redColor}>Hello Page...</div>;
 };
 
 export default World;
