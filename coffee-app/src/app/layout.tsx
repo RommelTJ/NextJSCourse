@@ -20,11 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <Head>
         <title>Coffee App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/coffee-app/public/favicon.ico" />
       </Head>
       <body className={inter.className}>
         {children}
-        <footer className={styles.footer}>My Footer</footer>
       </body>
     </html>
   )
