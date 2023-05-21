@@ -19,5 +19,9 @@ rn-app-examples/.yarn/**
 .idea/**
 *.iml
 
+# Project files
+*/.yarn/**
+*/node_modules/**
+
 # Secrets
 env.js
