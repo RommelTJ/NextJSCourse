@@ -7,7 +7,8 @@ const CoffeeStore = (props: Props) => {
   return (
     <div>
       <h1>Coffee Store Page {slug}</h1>
-      <Link href="/">Back to Home</Link>
+      <div><Link href="/">Back to Home</Link></div>
+      <div><Link href={`/coffee-store/2324tsg`}>Go to dynamic</Link></div>
     </div>
   )
 };
