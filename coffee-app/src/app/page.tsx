@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import styles from "./styles.module.css";
 import Banner from "@/components/Banner";
+import Card from "@/components/Card/Card";
 
 export default function Home() {
 
@@ -17,6 +18,7 @@ export default function Home() {
       <div className={styles.heroImage}>
         <Image src="/static/hero-image.png" alt="hero image" width={700} height={400} />
       </div>
+      <Card name="DarkHorse Coffee" href="/coffee-store/darkhorse-coffee" imageUrl="/static/hero-image.png" />
     </main>
   )
 }
