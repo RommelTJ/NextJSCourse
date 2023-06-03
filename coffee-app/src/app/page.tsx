@@ -6,9 +6,19 @@ import styles from "./styles.module.css";
 import Banner from "@/components/Banner";
 import Card from "@/components/Card/Card";
 
-import coffeeStores from "../data/coffee-stores.json";
+import coffeeStoreData from "../data/coffee-stores.json";
+import {useEffect, useState} from "react";
 
-function getCoffeeStores() {
+type CoffeeStore = {
+  id: number;
+  name: string;
+  imgUrl: string;
+  websiteUrl: string;
+  address: string;
+  neighbourhood: string;
+};
+
+function getCoffeeStores(): CoffeeStore[] {
   // const res = await fetch('https://api.example.com/...');
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
@@ -18,11 +28,16 @@ function getCoffeeStores() {
   //   // This will activate the closest `error.js` Error Boundary
   //   throw new Error('Failed to fetch data');
   // }
-  return coffeeStores;
+  return coffeeStoreData;
 }
 
+
 export default function Home() {
-  const coffeeData = getCoffeeStores();
+  const [stores, setStores] = useState<CoffeeStore[]>([]);
+
+  useEffect(() => {
+    if (stores.length == 0) setStores(getCoffeeStores());
+  }, []);
 
   const handleOnBannerBtnClick = () => {
     console.log("Clicked banner button");
@@ -34,11 +49,11 @@ export default function Home() {
       <div className={styles.heroImage}>
         <Image src="/static/hero-image.png" alt="hero image" width={700} height={400} />
       </div>
-      { coffeeData.length > 0 && (
+      { stores.length > 0 && (
         <div>
           <h2 className={styles.heading2}>Toronto Stores</h2>
           <div className={styles.cardLayout}>
-            { coffeeData.map(s => {
+            { stores.map(s => {
               return (
                 <Card
                   key={s.id}
