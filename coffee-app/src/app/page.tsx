@@ -8,7 +8,7 @@ import Card from "@/components/Card/Card";
 
 import coffeeStores from "../data/coffee-stores.json";
 
-async function getCoffeeStores() {
+function getCoffeeStores() {
   // const res = await fetch('https://api.example.com/...');
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
@@ -21,9 +21,8 @@ async function getCoffeeStores() {
   return coffeeStores;
 }
 
-export default async function Home() {
-  const coffeeData = await getCoffeeStores();
-  console.log("coffee data: ", coffeeData);
+export default function Home() {
+  const coffeeData = getCoffeeStores();
 
   const handleOnBannerBtnClick = () => {
     console.log("Clicked banner button");
@@ -35,19 +34,24 @@ export default async function Home() {
       <div className={styles.heroImage}>
         <Image src="/static/hero-image.png" alt="hero image" width={700} height={400} />
       </div>
-      <div className={styles.cardLayout}>
-        { coffeeData.map(s => {
-          return (
-            <Card
-              key={s.id}
-              name={s.name}
-              href={`/coffee-store/${s.id}`}
-              imageUrl={s.imgUrl}
-              className={styles.card}
-            />
-          )
-        }) }
-      </div>
+      { coffeeData.length > 0 && (
+        <div>
+          <h2 className={styles.heading2}>Toronto Stores</h2>
+          <div className={styles.cardLayout}>
+            { coffeeData.map(s => {
+              return (
+                <Card
+                  key={s.id}
+                  name={s.name}
+                  href={`/coffee-store/${s.id}`}
+                  imageUrl={s.imgUrl}
+                  className={styles.card}
+                />
+              )
+            }) }
+          </div>
+        </div>
+      )}
     </main>
   )
 }
