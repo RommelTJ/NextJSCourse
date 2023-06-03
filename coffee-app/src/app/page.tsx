@@ -8,7 +8,22 @@ import Card from "@/components/Card/Card";
 
 import coffeeStores from "../data/coffee-stores.json";
 
-export default function Home() {
+async function getCoffeeStores() {
+  // const res = await fetch('https://api.example.com/...');
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
+
+  // Recommendation: handle errors
+  // if (!res.ok) {
+  //   // This will activate the closest `error.js` Error Boundary
+  //   throw new Error('Failed to fetch data');
+  // }
+  return coffeeStores;
+}
+
+export default async function Home() {
+  const coffeeData = await getCoffeeStores();
+  console.log("coffee data: ", coffeeData);
 
   const handleOnBannerBtnClick = () => {
     console.log("Clicked banner button");
@@ -21,7 +36,7 @@ export default function Home() {
         <Image src="/static/hero-image.png" alt="hero image" width={700} height={400} />
       </div>
       <div className={styles.cardLayout}>
-        { coffeeStores.map(s => {
+        { coffeeData.map(s => {
           return (
             <Card
               key={s.id}
