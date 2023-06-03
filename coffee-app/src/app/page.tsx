@@ -26,7 +26,7 @@ export default function Home() {
             <Card
               key={s.id}
               name={s.name}
-              href={`/coffee-store/${s.name}`}
+              href={`/coffee-store/${s.id}`}
               imageUrl={s.imgUrl}
               className={styles.card}
             />
