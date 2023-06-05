@@ -9,13 +9,13 @@ import Card from "@/components/Card/Card";
 import coffeeStoreData from "../data/coffee-stores.json";
 import {useEffect, useState} from "react";
 
-type CoffeeStore = {
+export type CoffeeStore = {
   id: number;
   name: string;
-  imgUrl: string;
-  websiteUrl: string;
+  imgUrl?: string;
+  websiteUrl?: string;
   address: string;
-  neighbourhood: string;
+  neighbourhood?: string;
 };
 
 function getCoffeeStores(): CoffeeStore[] {
@@ -59,7 +59,7 @@ export default function Home() {
                   key={s.id}
                   name={s.name}
                   href={`/coffee-store/${s.id}`}
-                  imageUrl={s.imgUrl}
+                  imageUrl={s.imgUrl || ""}
                   className={styles.card}
                 />
               )
