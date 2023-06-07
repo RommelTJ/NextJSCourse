@@ -5,20 +5,12 @@ import Banner from "@/components/Banner";
 import Card from "@/components/Card/Card";
 import { CoffeeStore } from "@/models/CoffeeStore";
 import { FoursquareLocation } from "@/models/FoursquareLocation";
-import {fetchFoursquareCoffeeStores} from "@/lib/coffee-stores";
+import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore } from "@/lib/coffee-stores";
 
 async function getCoffeeStores() {
   const foursquareLocations = await fetchFoursquareCoffeeStores();
-  return foursquareLocations.map((loc: FoursquareLocation) => {
-    return {
-      id: loc.fsq_id,
-      name: loc.name,
-      address: loc.address,
-      neighbourhood: loc.cross_street
-    };
-  });
+  return foursquareLocations.map((loc: FoursquareLocation) => foursquareToCoffeeStore(loc));
 }
-
 
 export default async function Home() {
   const stores: CoffeeStore[] = await getCoffeeStores();

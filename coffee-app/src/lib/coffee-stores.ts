@@ -1,4 +1,5 @@
 import {FoursquareLocation} from "@/models/FoursquareLocation";
+import {CoffeeStore} from "@/models/CoffeeStore";
 
 const getUrlForCoffeeStores = (query: string, latLong: string, fields: string, limit: number) => {
   return `https://api.foursquare.com/v3/places/search?query=${query}&ll=${latLong}&fields=${fields}&limit=${limit}`
@@ -24,4 +25,13 @@ export const fetchFoursquareCoffeeStores = async () => {
   }
   const jsonData = await res.json();
   return jsonData.results as FoursquareLocation[];
+};
+
+export const foursquareToCoffeeStore = (loc: FoursquareLocation): CoffeeStore => {
+  return {
+    id: loc.fsq_id,
+    name: loc.name,
+    address: loc.location.address,
+    neighbourhood: loc.location.cross_street
+  };
 };
