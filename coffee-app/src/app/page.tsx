@@ -5,11 +5,15 @@ import Banner from "@/components/Banner";
 import Card from "@/components/Card/Card";
 import { CoffeeStore } from "@/models/CoffeeStore";
 import { FoursquareLocation } from "@/models/FoursquareLocation";
-import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore } from "@/lib/coffee-stores";
+import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore, fetchPlacePhotos } from "@/lib/coffee-stores";
 
 async function getCoffeeStores() {
   const foursquareLocations = await fetchFoursquareCoffeeStores();
   return foursquareLocations.map((loc: FoursquareLocation) => foursquareToCoffeeStore(loc));
+}
+
+async function getPhotoForStore(id: string){
+  return await fetchPlacePhotos(id);
 }
 
 export default async function Home() {
@@ -25,13 +29,15 @@ export default async function Home() {
         <div>
           <h2 className={styles.heading2}>San Diego Coffee Shops</h2>
           <div className={styles.cardLayout}>
-            { stores.map(s => {
+            { stores.map(async (s) => {
+              const photo = await getPhotoForStore(s.id);
+              const imageUrl = `${photo.prefix}260x160${photo.suffix}`;
               return (
                 <Card
                   key={s.id}
                   name={s.name}
                   href={`/coffee-store/${s.id}`}
-                  imageUrl={s.imgUrl || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+                  imageUrl={imageUrl || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
                   className={styles.card}
                 />
               )
