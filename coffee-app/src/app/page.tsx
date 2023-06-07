@@ -3,45 +3,18 @@ import Image from "next/image";
 import styles from "./styles.module.css";
 import Banner from "@/components/Banner";
 import Card from "@/components/Card/Card";
-
-export type CoffeeStore = {
-  id: number;
-  name: string;
-  imgUrl?: string;
-  websiteUrl?: string;
-  address: string;
-  neighbourhood?: string;
-};
-
-export type FoursquareLocation = {
-  fsq_id: number;
-  name: string;
-  address: string;
-  cross_street: string;
-}
+import { CoffeeStore } from "@/models/CoffeeStore";
+import { FoursquareLocation } from "@/models/FoursquareLocation";
+import {fetchFoursquareCoffeeStores} from "@/lib/coffee-stores";
 
 async function getCoffeeStores() {
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `${process.env.FOURSQUARE_API_KEY}`
-    }
-  };
-
-  const res = await fetch('https://api.foursquare.com/v3/places/search?query=coffee%20shop&ll=32.7067015%2C-117.13199&fields=fsq_id%2Cname%2Clocation&limit=9', options);
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data');
-  }
-  const jsonData = await res.json();
-  const results = jsonData.results as FoursquareLocation[];
-  return results.map((r: FoursquareLocation) => {
+  const foursquareLocations = await fetchFoursquareCoffeeStores();
+  return foursquareLocations.map((loc: FoursquareLocation) => {
     return {
-      id: r.fsq_id,
-      name: r.name,
-      address: r.address,
-      neighbourhood: r.cross_street
+      id: loc.fsq_id,
+      name: loc.name,
+      address: loc.address,
+      neighbourhood: loc.cross_street
     };
   });
 }
