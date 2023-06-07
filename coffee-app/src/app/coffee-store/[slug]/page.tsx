@@ -4,7 +4,7 @@ import Image from "next/image";
 import cls from "classnames";
 
 import styles from "./coffee-store.module.css";
-import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore } from "@/lib/coffee-stores";
+import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore, fetchPlacePhotos } from "@/lib/coffee-stores";
 
 interface Props { params: { slug: string } }
 
@@ -29,6 +29,8 @@ const CoffeeStore = async ({ params }: Props) => {
   const foursquareStore = foursquareStores.find(s => s.fsq_id == slug)!
   const store = foursquareToCoffeeStore(foursquareStore);
   const { name, address, neighbourhood, imgUrl } = store;
+  const photo = await fetchPlacePhotos(slug);
+  const photoUrl = `${photo.prefix}600x360${photo.suffix}`;
 
   return (
     <div className={styles.layout}>
@@ -41,7 +43,7 @@ const CoffeeStore = async ({ params }: Props) => {
             <h1 className={styles.name}>{name}</h1>
           </div>
           <Image
-            src={imgUrl || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+            src={photoUrl || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
             width={600}
             height={360}
             className={styles.storeImg}
