@@ -13,12 +13,19 @@ export type CoffeeStore = {
   neighbourhood?: string;
 };
 
+export type FoursquareLocation = {
+  fsq_id: number;
+  name: string;
+  address: string;
+  cross_street: string;
+}
+
 async function getCoffeeStores() {
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: process.env.FOURSQUARE_API_KEY
+      Authorization: `${process.env.FOURSQUARE_API_KEY}`
     }
   };
 
@@ -28,9 +35,8 @@ async function getCoffeeStores() {
     throw new Error('Failed to fetch data');
   }
   const jsonData = await res.json();
-  const results = jsonData.results;
-  // TODO: Add a FourSquare place object
-  return results.map((r: any) => {
+  const results = jsonData.results as FoursquareLocation[];
+  return results.map((r: FoursquareLocation) => {
     return {
       id: r.fsq_id,
       name: r.name,
