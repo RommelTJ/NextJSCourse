@@ -28,16 +28,18 @@ export const fetchFoursquareCoffeeStores = async () => {
   return jsonData.results as FoursquareLocation[];
 };
 
-export const fetchPlacePhotos = async (id: string) => {
-  const res = await fetch(`https://api.foursquare.com/v3/places/${id}/photos?limit=1`, options);
+export const fetchPlacePhotos = async (id: string, limit: number, resolution: string = "original") => {
+  const res = await fetch(`https://api.foursquare.com/v3/places/${id}/photos?limit=${limit}`, options);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data');
   }
   const jsonData = await res.json();
   const photos = jsonData as FoursquarePhoto[];
-  return photos[0];
+  return photos.map(p => assemblePhotoUrl(p, resolution));
 }
+
+const assemblePhotoUrl = (photo: FoursquarePhoto, resolution: string): string => `${photo.prefix}${resolution}${photo.suffix}`;
 
 export const foursquareToCoffeeStore = (loc: FoursquareLocation): CoffeeStore => {
   return {

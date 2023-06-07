@@ -29,8 +29,9 @@ const CoffeeStore = async ({ params }: Props) => {
   const foursquareStore = foursquareStores.find(s => s.fsq_id == slug)!
   const store = foursquareToCoffeeStore(foursquareStore);
   const { name, address, neighbourhood, imgUrl } = store;
-  const photo = await fetchPlacePhotos(slug);
-  const photoUrl = `${photo.prefix}600x360${photo.suffix}`;
+  const photoUrls = await fetchPlacePhotos(slug, 4, "600x360");
+
+  const otherImageSize = 400;
 
   return (
     <div className={styles.layout}>
@@ -43,7 +44,7 @@ const CoffeeStore = async ({ params }: Props) => {
             <h1 className={styles.name}>{name}</h1>
           </div>
           <Image
-            src={photoUrl || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+            src={photoUrls[0] || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
             width={600}
             height={360}
             className={styles.storeImg}
@@ -68,6 +69,43 @@ const CoffeeStore = async ({ params }: Props) => {
           <button className={styles.upvoteButton}>
             Up vote!
           </button>
+        </div>
+
+      </div>
+
+      <div className="container mx-auto flex flex-wrap content-center">
+        <div className="flex-1">
+          <div className="mx-auto justify-center" style={{width: otherImageSize}}>
+            <Image
+              src={photoUrls[1] || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+              width={otherImageSize}
+              height={otherImageSize}
+              className={styles.storeImg}
+              alt={name}
+            />
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="mx-auto justify-center" style={{width: otherImageSize}}>
+            <Image
+              src={photoUrls[2] || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+              width={otherImageSize}
+              height={otherImageSize}
+              className={styles.storeImg}
+              alt={name}
+            />
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="mx-auto justify-center" style={{width: otherImageSize}}>
+            <Image
+              src={photoUrls[3] || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+              width={otherImageSize}
+              height={otherImageSize}
+              className={styles.storeImg}
+              alt={name}
+            />
+          </div>
         </div>
       </div>
     </div>

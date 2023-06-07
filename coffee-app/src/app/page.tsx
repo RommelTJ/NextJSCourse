@@ -13,7 +13,7 @@ async function getCoffeeStores() {
 }
 
 async function getPhotoForStore(id: string){
-  return await fetchPlacePhotos(id);
+  return await fetchPlacePhotos(id, 1, "260x160");
 }
 
 export default async function Home() {
@@ -30,14 +30,13 @@ export default async function Home() {
           <h2 className={styles.heading2}>San Diego Coffee Shops</h2>
           <div className={styles.cardLayout}>
             { stores.map(async (s) => {
-              const photo = await getPhotoForStore(s.id);
-              const imageUrl = `${photo.prefix}260x160${photo.suffix}`;
+              const imageUrls = await getPhotoForStore(s.id);
               return (
                 <Card
                   key={s.id}
                   name={s.name}
                   href={`/coffee-store/${s.id}`}
-                  imageUrl={imageUrl || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+                  imageUrl={imageUrls[0] || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
                   className={styles.card}
                 />
               )
