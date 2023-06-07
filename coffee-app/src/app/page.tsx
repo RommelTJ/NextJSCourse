@@ -18,7 +18,7 @@ async function getCoffeeStores() {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: 'REDACTED'
+      Authorization: process.env.FOURSQUARE_API_KEY
     }
   };
 
