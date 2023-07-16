@@ -31,7 +31,7 @@ export default async function Home(props: Props) {
       </div>
       { stores.length > 0 && (
         <div>
-          <h2 className={styles.heading2}>Vancouver Shops</h2>
+          <h2 className={styles.heading2}>{latLng ? "Stores near me" : "Vancouver Shops"}</h2>
           <div className={styles.cardLayout}>
             { stores.map(async (s) => {
               const imageUrls = await getPhotoForStore(s.id);
