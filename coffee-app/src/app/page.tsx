@@ -7,8 +7,9 @@ import { CoffeeStore } from "@/models/CoffeeStore";
 import { FoursquareLocation } from "@/models/FoursquareLocation";
 import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore, fetchPlacePhotos } from "@/lib/coffee-stores";
 
-async function getCoffeeStores() {
-  const foursquareLocations = await fetchFoursquareCoffeeStores();
+async function getCoffeeStores(latLng?: string) {
+  const limit = latLng ? 30 : 9;
+  const foursquareLocations = await fetchFoursquareCoffeeStores(latLng, limit);
   return foursquareLocations.map((loc: FoursquareLocation) => foursquareToCoffeeStore(loc));
 }
 
@@ -16,8 +17,11 @@ async function getPhotoForStore(id: string){
   return await fetchPlacePhotos(id, 1, "260x160");
 }
 
-export default async function Home() {
-  const stores: CoffeeStore[] = await getCoffeeStores();
+interface Props { params?: { slug: string }, searchParams?: { latLng: string } };
+
+export default async function Home(props: Props) {
+  const latLng = props.searchParams?.latLng;
+  const stores: CoffeeStore[] = await getCoffeeStores(latLng); // This is where stores get fetched
 
   return (
     <main className={`flex min-h-screen flex-col items-center p-24 ${styles.main}`}>
@@ -27,7 +31,7 @@ export default async function Home() {
       </div>
       { stores.length > 0 && (
         <div>
-          <h2 className={styles.heading2}>San Diego Coffee Shops</h2>
+          <h2 className={styles.heading2}>Vancouver Shops</h2>
           <div className={styles.cardLayout}>
             { stores.map(async (s) => {
               const imageUrls = await getPhotoForStore(s.id);

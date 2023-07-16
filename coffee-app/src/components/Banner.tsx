@@ -1,9 +1,18 @@
 "use client";
-import styles from "./banner.module.css";
+import { useEffect } from "react";
 import useTrackLocation from "@/hooks/useTrackLocation";
+import { useRouter } from "next/navigation";
+import styles from "./banner.module.css";
 
 const Banner = () => {
-  const { latLong, handleTrackLocation, locationErrorMsg, isFindingLocation } = useTrackLocation();
+  const router = useRouter();
+  const { latLng, handleTrackLocation, locationErrorMsg, isFindingLocation } = useTrackLocation();
+
+  useEffect(() => {
+    if (latLng) {
+      router.push(`/?latLng=${latLng}`);
+    }
+  }, [latLng]);
 
   const handleOnBannerBtnClick = () => {
     handleTrackLocation();
