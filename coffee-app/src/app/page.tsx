@@ -6,7 +6,6 @@ import Card from "@/components/Card/Card";
 import { CoffeeStore } from "@/models/CoffeeStore";
 import { FoursquareLocation } from "@/models/FoursquareLocation";
 import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore, fetchPlacePhotos } from "@/lib/coffee-stores";
-import useTrackLocation from "@/hooks/useTrackLocation";
 
 async function getCoffeeStores() {
   const foursquareLocations = await fetchFoursquareCoffeeStores();
@@ -20,18 +19,9 @@ async function getPhotoForStore(id: string){
 export default async function Home() {
   const stores: CoffeeStore[] = await getCoffeeStores();
 
-  const { latLong, handleTrackLocation, locationErrorMsg, isFindingLocation } = useTrackLocation();
-  console.log("latLong", latLong);
-  console.log({locationErrorMsg});
-
-  const handleOnBannerBtnClick = () => {
-    handleTrackLocation();
-  }
-
   return (
     <main className={`flex min-h-screen flex-col items-center p-24 ${styles.main}`}>
-      <Banner buttonText={isFindingLocation ? "Locating..." : "View stores nearby"} />
-      { locationErrorMsg && <div>Something went wrong. Unable to retrieve your location.</div>}
+      <Banner />
       <div className={styles.heroImage}>
         <Image src="/static/hero-image.png" alt="hero image" width={700} height={400} />
       </div>

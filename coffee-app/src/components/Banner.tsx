@@ -1,11 +1,13 @@
+"use client";
 import styles from "./banner.module.css";
+import useTrackLocation from "@/hooks/useTrackLocation";
 
-interface Props {
-  buttonText: string;
-}
+const Banner = () => {
+  const { latLong, handleTrackLocation, locationErrorMsg, isFindingLocation } = useTrackLocation();
 
-const Banner = (props: Props) => {
-  const { buttonText } = props;
+  const handleOnBannerBtnClick = () => {
+    handleTrackLocation();
+  }
 
   return (
     <div className={styles.container}>
@@ -15,8 +17,11 @@ const Banner = (props: Props) => {
       </h1>
       <p className={styles.subTitle}>Discover your local coffee shops</p>
       <div className={styles.buttonWrapper}>
-        <button className={styles.button}>{buttonText}</button>
+        <button className={styles.button} onClick={handleOnBannerBtnClick}>
+          {isFindingLocation ? "Locating..." : "View stores nearby"}
+        </button>
       </div>
+      { locationErrorMsg && <div>Something went wrong. Unable to retrieve your location.</div>}
     </div>
   );
 };
