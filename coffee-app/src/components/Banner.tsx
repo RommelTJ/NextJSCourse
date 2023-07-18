@@ -1,12 +1,18 @@
 "use client";
-import { useEffect } from "react";
-import useTrackLocation from "@/hooks/useTrackLocation";
-import { useRouter } from "next/navigation";
+
 import styles from "./banner.module.css";
+
+import { useEffect, useContext } from "react";
+import { useRouter } from "next/navigation";
+
+import useTrackLocation from "@/hooks/useTrackLocation";
+import {CoffeeContext} from "@/app/coffee-provider";
 
 const Banner = () => {
   const router = useRouter();
   const { latLng, handleTrackLocation, locationErrorMsg, isFindingLocation } = useTrackLocation();
+  const { state } = useContext(CoffeeContext);
+  console.log("state: ", state);
 
   useEffect(() => {
     if (latLng) {
