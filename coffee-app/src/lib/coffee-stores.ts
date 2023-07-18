@@ -14,6 +14,16 @@ const getUrlForCoffeeStores = (query: string, latLong: string, fields: string, l
   return `https://api.foursquare.com/v3/places/search?query=${query}&ll=${latLong}&fields=${fields}&limit=${limit}`
 }
 
+export const fetchFoursquareCoffeeStore = async (id: string) => {
+  const res = await fetch(`https://api.foursquare.com/v3/places/${id}`, options);
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error('Failed to fetch data');
+  }
+  const jsonData = await res.json();
+  return jsonData as FoursquareLocation;
+};
+
 export const fetchFoursquareCoffeeStores = async (
   latLng: string = "49.2577841%2C-123.1651891",
   limit: number = 6
