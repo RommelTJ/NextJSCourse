@@ -4,6 +4,7 @@ const useTrackLocation = () => {
   const [locationErrorMsg, setLocationErrorMsg] = useState("");
   const [latLng, setLatLng] = useState("");
   const [isFindingLocation, setIsFindingLocation] = useState(false);
+  // TODO: Set Context
 
   const onSuccess = (position: GeolocationPosition) => {
     const latitude = position.coords.latitude;
