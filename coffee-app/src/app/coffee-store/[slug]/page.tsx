@@ -4,7 +4,7 @@ import Image from "next/image";
 import cls from "classnames";
 
 import styles from "./coffee-store.module.css";
-import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore, fetchPlacePhotos } from "@/lib/coffee-stores";
+import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore, fetchPlacePhotos, fetchFoursquareCoffeeStore } from "@/lib/coffee-stores";
 
 interface Props { params: { slug: string } }
 
@@ -18,15 +18,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
-  const foursquareStores = await fetchFoursquareCoffeeStores();
-  const foursquareStore = foursquareStores.find(s => s.fsq_id == slug)!;
+  const foursquareStore = await fetchFoursquareCoffeeStore(slug);
   return { title: foursquareStore.name };
 }
 
 const CoffeeStore = async ({ params }: Props) => {
   const { slug } = params;
-  const foursquareStores = await fetchFoursquareCoffeeStores();
-  const foursquareStore = foursquareStores.find(s => s.fsq_id == slug)!
+  const foursquareStore = await fetchFoursquareCoffeeStore(slug);
   const store = foursquareToCoffeeStore(foursquareStore);
   const { name, address, neighbourhood, imgUrl } = store;
   const photoUrls = await fetchPlacePhotos(slug, 4, "600x360");
