@@ -2,7 +2,7 @@
 
 Mastering NextJS.
 
-Version: 0.7.0 - 7 Jun 2023
+Version: 0.8.0 - 21 Jul 2023
 
 ## Description
 
