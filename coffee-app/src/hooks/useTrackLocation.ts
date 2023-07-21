@@ -1,16 +1,18 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
+
+import { ACTION_TYPES, CoffeeContext } from "@/app/coffee-provider";
+
 
 const useTrackLocation = () => {
   const [locationErrorMsg, setLocationErrorMsg] = useState("");
-  const [latLng, setLatLng] = useState("");
   const [isFindingLocation, setIsFindingLocation] = useState(false);
-  // TODO: Set Context
+  const { state, dispatch } = useContext(CoffeeContext);
+  const latLng = state.latLng;
 
   const onSuccess = (position: GeolocationPosition) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-
-    setLatLng(`${latitude},${longitude}`);
+    dispatch({ type: ACTION_TYPES.SET_LAT_LNG, payload: `${latitude},${longitude}`})
     setLocationErrorMsg("");
     setIsFindingLocation(false);
   };
@@ -25,7 +27,6 @@ const useTrackLocation = () => {
     if (!navigator.geolocation) {
       setLocationErrorMsg("Geolocation is not supported by your browser");
     } else {
-      // status.textContent = "Locating…";
       navigator.geolocation.getCurrentPosition(onSuccess, onError);
     }
   };

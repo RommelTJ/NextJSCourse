@@ -8,7 +8,7 @@ interface CoffeeState {
   coffeeStores: CoffeeStore[];
 }
 
-enum ACTION_TYPES {
+export enum ACTION_TYPES {
   SET_LAT_LNG = "SET_LAT_LNG",
   SET_COFFEE_STORES = "SET_COFFEE_STORES"
 }
