@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { FoursquareLocation } from "@/models/FoursquareLocation";
+import Airtable from "airtable";
 
 
 const options = {
@@ -29,4 +30,17 @@ export async function GET(request: NextRequest): Promise<NextResponse<Foursquare
   const jsonData = await res.json();
   const results = jsonData.results as FoursquareLocation[];
   return NextResponse.json(results);
+}
+
+Airtable
+  .configure({
+    apiKey: `${process.env.AIRTABLE_API_KEY}`,
+    endpointUrl: 'https://api.airtable.com',
+  });
+const base = Airtable.base(`${process.env.AIRTABLE_BASE_ID}`);
+const table = base('coffee-stores');
+export async function POST(request: NextRequest) {
+  const rows = await table.select({maxRecords: 3, view: 'Grid view'}).all();
+  const data = { records: rows };
+  return NextResponse.json(data);
 }
