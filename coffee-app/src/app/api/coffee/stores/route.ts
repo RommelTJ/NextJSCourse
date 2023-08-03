@@ -39,7 +39,7 @@ Airtable
   });
 const base = Airtable.base(`${process.env.AIRTABLE_BASE_ID}`);
 const table = base('coffee-stores');
-interface AirtableFields {
+interface PostParams {
   fields: {
     ID: string;
     Name: string;
@@ -47,12 +47,15 @@ interface AirtableFields {
     Votes: number;
   }
 }
-interface PostParams {
-  stores: AirtableFields[];
-}
 export async function POST(request: NextRequest) {
   const body: PostParams = await request.json();
-  const fieldsArray = body.stores;
-  const response = await table.create(fieldsArray)
-  return NextResponse.json(response);
+
+  // Check if the store already exists.
+  const existing = await table.select({maxRecords: 1, view: "Grid view", filterByFormula: `{ID} = '${body.fields.ID}'`}).all();
+  if (existing.length == 0) {
+    // It doesn't, so create it.
+    const response = await table.create([body]);
+    return NextResponse.json(response);
+  }
+  return NextResponse.json(existing);
 }
