@@ -39,8 +39,20 @@ Airtable
   });
 const base = Airtable.base(`${process.env.AIRTABLE_BASE_ID}`);
 const table = base('coffee-stores');
+interface AirtableFields {
+  fields: {
+    ID: string;
+    Name: string;
+    Address: string;
+    Votes: number;
+  }
+}
+interface PostParams {
+  stores: AirtableFields[];
+}
 export async function POST(request: NextRequest) {
-  const rows = await table.select({maxRecords: 3, view: 'Grid view'}).all();
-  const data = { records: rows };
-  return NextResponse.json(data);
+  const body: PostParams = await request.json();
+  const fieldsArray = body.stores;
+  const response = await table.create(fieldsArray)
+  return NextResponse.json(response);
 }
