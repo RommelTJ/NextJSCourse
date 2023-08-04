@@ -55,7 +55,11 @@ export async function POST(request: NextRequest) {
   if (existing.length == 0) {
     // It doesn't, so create it.
     const response = await table.create([body]);
-    return NextResponse.json(response);
+    const fields = response[0].fields;
+    return NextResponse.json(fields);
   }
-  return NextResponse.json(existing);
+  // It does, so just return it.
+  const firstRecord = existing[0];
+  const fields = firstRecord.fields;
+  return NextResponse.json(fields);
 }
