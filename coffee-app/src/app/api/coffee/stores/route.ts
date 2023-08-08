@@ -50,16 +50,20 @@ interface PostParams {
 export async function POST(request: NextRequest) {
   const body: PostParams = await request.json();
 
-  // Check if the store already exists.
-  const existing = await table.select({maxRecords: 1, view: "Grid view", filterByFormula: `{ID} = '${body.fields.ID}'`}).all();
-  if (existing.length == 0) {
-    // It doesn't, so create it.
-    const response = await table.create([body]);
-    const fields = response[0].fields;
+  if (body.fields.ID && body.fields.Name) {
+    // Check if the store already exists.
+    const existing = await table.select({maxRecords: 1, view: "Grid view", filterByFormula: `{ID} = '${body.fields.ID}'`}).all();
+    if (existing.length == 0) {
+      // It doesn't, so create it.
+      const response = await table.create([body]);
+      const fields = response[0].fields;
+      return NextResponse.json(fields);
+    }
+    // It does, so just return it.
+    const firstRecord = existing[0];
+    const fields = firstRecord.fields;
     return NextResponse.json(fields);
+  } else {
+    return NextResponse.json({ error: 'ID or Name is missing' }, { status: 500 });
   }
-  // It does, so just return it.
-  const firstRecord = existing[0];
-  const fields = firstRecord.fields;
-  return NextResponse.json(fields);
 }
