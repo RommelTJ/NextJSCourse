@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { FoursquareLocation } from "@/models/FoursquareLocation";
-import Airtable from "airtable";
+import {table} from "@/lib/airtable";
 
 
 const options = {
@@ -32,19 +32,13 @@ export async function GET(request: NextRequest): Promise<NextResponse<Foursquare
   return NextResponse.json(results);
 }
 
-Airtable
-  .configure({
-    apiKey: `${process.env.AIRTABLE_API_KEY}`,
-    endpointUrl: 'https://api.airtable.com',
-  });
-const base = Airtable.base(`${process.env.AIRTABLE_BASE_ID}`);
-const table = base('coffee-stores');
 interface PostParams {
   fields: {
     ID: string;
     Name: string;
     Address: string;
     Votes: number;
+    Image: string;
   }
 }
 export async function POST(request: NextRequest) {
