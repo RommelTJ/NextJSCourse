@@ -4,7 +4,13 @@ import Image from "next/image";
 import cls from "classnames";
 
 import styles from "./coffee-store.module.css";
-import { fetchFoursquareCoffeeStores, foursquareToCoffeeStore, fetchPlacePhotos, fetchFoursquareCoffeeStore } from "@/lib/coffee-stores";
+import {
+  fetchFoursquareCoffeeStores,
+  foursquareToCoffeeStore,
+  fetchPlacePhotos,
+  fetchFoursquareCoffeeStore,
+  airtableSync
+} from "@/lib/coffee-stores";
 
 interface Props { params: { slug: string } }
 
@@ -26,8 +32,9 @@ const CoffeeStore = async ({ params }: Props) => {
   const { slug } = params;
   const foursquareStore = await fetchFoursquareCoffeeStore(slug);
   const store = foursquareToCoffeeStore(foursquareStore);
-  const { name, address, neighbourhood, imgUrl } = store;
   const photoUrls = await fetchPlacePhotos(slug, 4, "600x360");
+  const imgUrl = photoUrls[0];
+  const { name, address, neighbourhood, votes } = await airtableSync({...store, imgUrl});
 
   const otherImageSize = 400;
 
@@ -61,7 +68,7 @@ const CoffeeStore = async ({ params }: Props) => {
           </div>
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/star.svg" width="24" height="24" alt="stars" />
-            <p className={styles.text}>1</p>
+            <p className={styles.text}>{votes || 0}</p>
           </div>
 
           <button className={styles.upvoteButton}>

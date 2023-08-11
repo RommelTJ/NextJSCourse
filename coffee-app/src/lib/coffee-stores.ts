@@ -20,8 +20,7 @@ export const fetchFoursquareCoffeeStore = async (id: string) => {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data');
   }
-  const jsonData = await res.json();
-  return jsonData as FoursquareLocation;
+  return await res.json() as FoursquareLocation;
 };
 
 export const fetchFoursquareCoffeeStores = async (
@@ -60,3 +59,23 @@ export const foursquareToCoffeeStore = (loc: FoursquareLocation): CoffeeStore =>
     neighbourhood: loc.location.cross_street
   };
 };
+
+export const airtableSync = async (coffeeStore: CoffeeStore) => {
+  const payload = {
+    fields: {
+      ID: coffeeStore.id,
+      Name: coffeeStore.name,
+      Address: coffeeStore.address,
+      Votes: coffeeStore.votes || 0,
+      Image: coffeeStore.imgUrl || ""
+    }
+  };
+  const airtableRequest = await fetch("http://localhost:3000/api/coffee/stores/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const airtableResponse = await airtableRequest.json();
+  const updatedCoffeeStore: CoffeeStore = {...coffeeStore, votes: airtableResponse.Votes};
+  return updatedCoffeeStore;
+}

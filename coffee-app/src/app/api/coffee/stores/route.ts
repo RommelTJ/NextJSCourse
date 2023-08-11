@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { FoursquareLocation } from "@/models/FoursquareLocation";
+import {table} from "@/lib/airtable";
 
 
 const options = {
@@ -29,4 +30,34 @@ export async function GET(request: NextRequest): Promise<NextResponse<Foursquare
   const jsonData = await res.json();
   const results = jsonData.results as FoursquareLocation[];
   return NextResponse.json(results);
+}
+
+interface PostParams {
+  fields: {
+    ID: string;
+    Name: string;
+    Address: string;
+    Votes: number;
+    Image: string;
+  }
+}
+export async function POST(request: NextRequest) {
+  const body: PostParams = await request.json();
+
+  if (body.fields.ID && body.fields.Name) {
+    // Check if the store already exists.
+    const existing = await table.select({maxRecords: 1, view: "Grid view", filterByFormula: `{ID} = '${body.fields.ID}'`}).all();
+    if (existing.length == 0) {
+      // It doesn't, so create it.
+      const response = await table.create([body]);
+      const fields = response[0].fields;
+      return NextResponse.json(fields);
+    }
+    // It does, so just return it.
+    const firstRecord = existing[0];
+    const fields = firstRecord.fields;
+    return NextResponse.json(fields);
+  } else {
+    return NextResponse.json({ error: 'ID or Name is missing' }, { status: 500 });
+  }
 }
