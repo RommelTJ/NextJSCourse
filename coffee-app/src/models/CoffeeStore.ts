@@ -5,4 +5,5 @@ export type CoffeeStore = {
   websiteUrl?: string;
   address: string;
   neighbourhood?: string;
+  votes?: number;
 };
