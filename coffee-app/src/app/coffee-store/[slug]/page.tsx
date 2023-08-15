@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import Link from "next/link";
 import Image from "next/image";
-import cls from "classnames";
 
 import styles from "./coffee-store.module.css";
 import {
@@ -11,7 +10,7 @@ import {
   fetchFoursquareCoffeeStore,
   airtableSync
 } from "@/lib/coffee-stores";
-import UpvoteButton from "@/components/UpvoteButton/UpvoteButton";
+import UpvoteCard from "@/components/UpvoteCard/UpvoteCard";
 
 interface Props { params: { slug: string } }
 
@@ -58,22 +57,7 @@ const CoffeeStore = async ({ params }: Props) => {
           />
         </div>
 
-        <div className={cls("glass", styles.col2)}>
-          <div className={styles.iconWrapper}>
-            <Image src="/static/icons/places.svg" width="24" height="24" alt="place" />
-            <p className={styles.text}>{address}</p>
-          </div>
-          <div className={styles.iconWrapper}>
-            <Image src="/static/icons/nearMe.svg" width="24" height="24" alt="neighbourhood" />
-            <p className={styles.text}>{neighbourhood}</p>
-          </div>
-          <div className={styles.iconWrapper}>
-            <Image src="/static/icons/star.svg" width="24" height="24" alt="stars" />
-            <p className={styles.text}>{votes || 0}</p>
-          </div>
-
-          <UpvoteButton />
-        </div>
+        <UpvoteCard address={address} neighborhood={neighbourhood || "Unknown"} votes={votes || 0} />
 
       </div>
 
