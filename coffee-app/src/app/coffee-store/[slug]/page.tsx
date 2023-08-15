@@ -11,6 +11,7 @@ import {
   fetchFoursquareCoffeeStore,
   airtableSync
 } from "@/lib/coffee-stores";
+import UpvoteButton from "@/components/UpvoteButton/UpvoteButton";
 
 interface Props { params: { slug: string } }
 
@@ -71,9 +72,7 @@ const CoffeeStore = async ({ params }: Props) => {
             <p className={styles.text}>{votes || 0}</p>
           </div>
 
-          <button className={styles.upvoteButton}>
-            Up vote!
-          </button>
+          <UpvoteButton />
         </div>
 
       </div>
