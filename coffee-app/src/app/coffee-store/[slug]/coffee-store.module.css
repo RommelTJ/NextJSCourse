@@ -64,11 +64,6 @@
   color: rgba(55, 59, 100, 1);
 }
 
-.iconWrapper {
-  display: flex;
-  margin-bottom: 1rem /* 16px */;
-}
-
 .text {
   padding-left: 0.5rem /* 8px */;
   font-size: 1.5rem /* 24px */;
