@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import styles from "./styles.module.css";
-import Banner from "@/components/Banner";
+import Banner from "@/components/Banner/Banner";
 import Card from "@/components/Card/Card";
 import { CoffeeStore } from "@/models/CoffeeStore";
 import { FoursquareLocation } from "@/models/FoursquareLocation";
