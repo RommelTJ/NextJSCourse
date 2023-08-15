@@ -7,10 +7,10 @@ import {
   fetchFoursquareCoffeeStores,
   foursquareToCoffeeStore,
   fetchPlacePhotos,
-  fetchFoursquareCoffeeStore,
-  airtableSync
+  fetchFoursquareCoffeeStore
 } from "@/lib/coffee-stores";
 import UpvoteCard from "@/components/UpvoteCard/UpvoteCard";
+import {CoffeeStore} from "@/models/CoffeeStore";
 
 interface Props { params: { slug: string } }
 
@@ -32,9 +32,10 @@ const CoffeeStore = async ({ params }: Props) => {
   const { slug } = params;
   const foursquareStore = await fetchFoursquareCoffeeStore(slug);
   const store = foursquareToCoffeeStore(foursquareStore);
+  let { name } = store;
   const photoUrls = await fetchPlacePhotos(slug, 4, "600x360");
   const imgUrl = photoUrls[0];
-  const { name, address, neighbourhood, votes } = await airtableSync({...store, imgUrl});
+  const storeWithImage: CoffeeStore = {...store, imgUrl};
 
   const otherImageSize = 400;
 
@@ -57,7 +58,7 @@ const CoffeeStore = async ({ params }: Props) => {
           />
         </div>
 
-        <UpvoteCard address={address} neighborhood={neighbourhood || "Unknown"} votes={votes || 0} />
+        <UpvoteCard store={storeWithImage} />
 
       </div>
 

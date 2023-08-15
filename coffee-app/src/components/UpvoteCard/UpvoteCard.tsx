@@ -1,19 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./UpvoteCard.module.css";
 import cls from "classnames";
 import Image from "next/image";
+import { airtableSync } from "@/lib/coffee-stores";
+import { CoffeeStore } from "@/models/CoffeeStore";
 
-interface Props {
-  address: string;
-  neighborhood: string;
-  votes: number;
-}
+interface Props { store: CoffeeStore }
 
 const UpvoteCard = (props: Props) => {
-  const { address, neighborhood, votes } = props;
-  const [votingCount, setVotingCount] = useState(votes);
+  const { address, neighbourhood, votes } = props.store;
+
+  useEffect(() => {
+    airtableSync(props.store)
+      .then(syncedStore => {
+        setVotingCount(syncedStore.votes || 0);
+      });
+  }, []);
+
+  const [votingCount, setVotingCount] = useState(votes || 0);
   const handleUpvoteClick = () => setVotingCount(votingCount + 1);
 
   return (
@@ -24,7 +30,7 @@ const UpvoteCard = (props: Props) => {
       </div>
       <div className={styles.iconWrapper}>
         <Image src="/static/icons/nearMe.svg" width="24" height="24" alt="neighbourhood" />
-        <p className={styles.text}>{neighborhood}</p>
+        <p className={styles.text}>{neighbourhood || "Unknown"}</p>
       </div>
       <div className={styles.iconWrapper}>
         <Image src="/static/icons/star.svg" width="24" height="24" alt="stars" />
