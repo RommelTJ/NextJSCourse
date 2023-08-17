@@ -20,7 +20,11 @@ const UpvoteCard = (props: Props) => {
   }, []);
 
   const [votingCount, setVotingCount] = useState(votes || 0);
-  const handleUpvoteClick = () => setVotingCount(votingCount + 1);
+  const handleUpvoteClick = () => {
+    const newCount = votingCount + 1;
+    airtableSync({...props.store, votes: newCount})
+      .then(syncedStore => setVotingCount(syncedStore.votes || 0));
+  };
 
   return (
     <div className={cls("glass", styles.col2)}>
