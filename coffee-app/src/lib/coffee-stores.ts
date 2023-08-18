@@ -76,6 +76,6 @@ export const airtableSync = async (coffeeStore: CoffeeStore) => {
     body: JSON.stringify(payload)
   });
   const airtableResponse = await airtableRequest.json();
-  const updatedCoffeeStore: CoffeeStore = {...coffeeStore, votes: airtableResponse.Votes};
+  const updatedCoffeeStore: CoffeeStore = {...coffeeStore, votes: airtableResponse.Votes, airtableID: airtableResponse.airtableID};
   return updatedCoffeeStore;
 }

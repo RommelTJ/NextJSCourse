@@ -56,20 +56,21 @@ export async function POST(request: NextRequest) {
       // It doesn't, so create it.
       const response = await table.create([body]);
       const fields = response[0].fields;
-      return NextResponse.json(fields);
+      const airtableID = response[0].id;
+      return NextResponse.json({...fields, airtableID});
     }
     // It does, so update it.
-    const airtableId = existing[0].id;
+    const airtableID = existing[0].id;
     // @ts-ignore
     const existingFields = (existing[0] as PostParams).fields;
     const existingVotes: number = existingFields.Votes || 0;
     const newVotes = body.fields.Votes == 0
       ? existingVotes
       : existingVotes >= body.fields.Votes ? body.fields.Votes + (existingVotes - body.fields.Votes + 1) : body.fields.Votes;
-    const update: UpdateParams[] = [{ id: airtableId, fields: {...existingFields, Votes: newVotes} }];
+    const update: UpdateParams[] = [{ id: airtableID, fields: {...existingFields, Votes: newVotes} }];
     const response = await table.update(update);
     const fields = response[0].fields;
-    return NextResponse.json(fields);
+    return NextResponse.json({...fields, airtableID});
   } else {
     return NextResponse.json({ error: 'ID or Name is missing' }, { status: 500 });
   }

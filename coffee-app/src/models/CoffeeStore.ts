@@ -6,4 +6,5 @@ export type CoffeeStore = {
   address: string;
   neighbourhood?: string;
   votes?: number;
+  airtableID?: string;
 };
