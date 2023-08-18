@@ -1,23 +1,37 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import styles from "./UpvoteCard.module.css";
 import cls from "classnames";
 import Image from "next/image";
+import useSWR from "swr";
+
+import styles from "./UpvoteCard.module.css";
 import { airtableSync } from "@/lib/coffee-stores";
 import { CoffeeStore } from "@/models/CoffeeStore";
+
+const fetcher = (path: string) => fetch(path).then(res => res.json());
 
 interface Props { store: CoffeeStore }
 
 const UpvoteCard = (props: Props) => {
   const { address, neighbourhood, votes } = props.store;
+  const [airtableID, setAirtableID] = useState<string|undefined>();
+  const { data } = useSWR(`http://localhost:3000/api/coffee/stores/${airtableID}`, fetcher);
 
   useEffect(() => {
     airtableSync(props.store)
       .then(syncedStore => {
+        setAirtableID(syncedStore.airtableID);
         setVotingCount(syncedStore.votes || 0);
       });
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      const votes: number = data.Votes;
+      setVotingCount(votes);
+    }
+  }, [data]);
 
   const [votingCount, setVotingCount] = useState(votes || 0);
   const handleUpvoteClick = () => {
