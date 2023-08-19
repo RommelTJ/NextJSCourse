@@ -41,6 +41,11 @@ interface PostParams {
     Image: string;
   }
 }
+
+interface UpdateParams extends PostParams{
+  id: string;
+}
+
 export async function POST(request: NextRequest) {
   const body: PostParams = await request.json();
 
@@ -51,12 +56,21 @@ export async function POST(request: NextRequest) {
       // It doesn't, so create it.
       const response = await table.create([body]);
       const fields = response[0].fields;
-      return NextResponse.json(fields);
+      const airtableID = response[0].id;
+      return NextResponse.json({...fields, airtableID});
     }
-    // It does, so just return it.
-    const firstRecord = existing[0];
-    const fields = firstRecord.fields;
-    return NextResponse.json(fields);
+    // It does, so update it.
+    const airtableID = existing[0].id;
+    // @ts-ignore
+    const existingFields = (existing[0] as PostParams).fields;
+    const existingVotes: number = existingFields.Votes || 0;
+    const newVotes = body.fields.Votes == 0
+      ? existingVotes
+      : existingVotes >= body.fields.Votes ? body.fields.Votes + (existingVotes - body.fields.Votes + 1) : body.fields.Votes;
+    const update: UpdateParams[] = [{ id: airtableID, fields: {...existingFields, Votes: newVotes} }];
+    const response = await table.update(update);
+    const fields = response[0].fields;
+    return NextResponse.json({...fields, airtableID});
   } else {
     return NextResponse.json({ error: 'ID or Name is missing' }, { status: 500 });
   }
