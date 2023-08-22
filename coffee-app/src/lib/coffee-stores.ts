@@ -70,7 +70,7 @@ export const airtableSync = async (coffeeStore: CoffeeStore) => {
       Image: coffeeStore.imgUrl || ""
     }
   };
-  const airtableRequest = await fetch("http://localhost:3000/api/coffee/stores/", {
+  const airtableRequest = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/coffee/stores/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
