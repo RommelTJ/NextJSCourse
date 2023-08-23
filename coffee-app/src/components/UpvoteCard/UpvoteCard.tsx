@@ -16,7 +16,7 @@ interface Props { store: CoffeeStore }
 const UpvoteCard = (props: Props) => {
   const { address, neighbourhood, votes } = props.store;
   const [airtableID, setAirtableID] = useState<string|undefined>();
-  const { data } = useSWR(`http://localhost:3000/api/coffee/stores/${airtableID}`, fetcher);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_HOST}/api/coffee/stores/${airtableID}`, fetcher);
 
   useEffect(() => {
     airtableSync(props.store)
