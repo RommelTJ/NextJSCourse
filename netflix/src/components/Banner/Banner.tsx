@@ -2,10 +2,32 @@
 
 import styles from "./Banner.module.css";
 
-const Banner = () => {
+interface Props {
+  title: string;
+  subTitle: string;
+  imgUrl: string;
+}
+
+const Banner = (props: Props) => {
+  const { title, subTitle, imgUrl } = props;
+
+  const handleOnPlay = () => console.log("handleOnPlay");
+
   return (
     <div>
-      <h1>Banner</h1>
+      <h3>{title}</h3>
+      <h3>{subTitle}</h3>
+      <button onClick={handleOnPlay}>Play</button>
+      <div
+        style={{
+          backgroundImage: `url(${imgUrl})`,
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          backgroundSize: "cover",
+          backgroundPosition: "50% 50%",
+        }}
+      ></div>
     </div>
   );
 };
