@@ -7,7 +7,11 @@ export default function Home() {
     <div>
       <h1>Netflix</h1>
       <NavBar />
-      <Banner />
+      <Banner
+        title="Clifford the red dog"
+        subTitle="a very cute dog"
+        imgUrl="/static/clifford.webp"
+      />
       <Card />
     </div>
   )
