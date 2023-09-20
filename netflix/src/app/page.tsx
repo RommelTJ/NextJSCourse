@@ -5,7 +5,6 @@ import Card from "@/components/Card/Card";
 export default function Home() {
   return (
     <div>
-      <h1>Netflix</h1>
       <NavBar username="me@rommelrico.com" />
       <Banner
         title="Clifford the red dog"
