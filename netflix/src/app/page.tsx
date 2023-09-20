@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div>
       <h1>Netflix</h1>
-      <NavBar />
+      <NavBar username="me@rommelrico.com" />
       <Banner
         title="Clifford the red dog"
         subTitle="a very cute dog"
