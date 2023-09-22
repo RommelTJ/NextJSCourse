@@ -4,6 +4,7 @@ import styles from "./NavBar.module.css";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
 
 interface Props {
   username: string;
@@ -12,10 +13,13 @@ interface Props {
 const NavBar = (props: Props) => {
   const { username } = props;
   const router = useRouter();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleOnClickHome = () => router.push("/");
 
   const handleOnClickMyList = () => router.push("/browse/my-list");
+
+  const handleShowDropdown = () => setShowDropdown(!showDropdown);
 
   return (
     <div className={styles.container}>
@@ -33,18 +37,17 @@ const NavBar = (props: Props) => {
         </ul>
         <nav className={styles.navContainer}>
           <div>
-            <button className={styles.usernameBtn}>
+            <button className={styles.usernameBtn} onClick={handleShowDropdown}>
               <p className={styles.username}>{username}</p>
             </button>
-
-            <div className={styles.navDropdown}>
-              <div>
-                <Link href="/login" legacyBehavior>
-                  <a className={styles.linkName}>Sign out</a>
-                </Link>
-                <div className={styles.lineWrapper}></div>
+            {showDropdown && (
+              <div className={styles.navDropdown}>
+                <div>
+                  <Link href="/login" className={styles.linkName}>Sign out</Link>
+                  <div className={styles.lineWrapper}></div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </nav>
       </div>
