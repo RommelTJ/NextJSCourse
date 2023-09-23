@@ -5,7 +5,7 @@ import styles from "./NavBar.module.css";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 interface Props {
   username: string;

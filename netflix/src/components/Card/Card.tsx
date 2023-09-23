@@ -3,7 +3,7 @@
 import styles from "./Card.module.css";
 
 import { useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 interface Props {
   imgUrl?: string;
