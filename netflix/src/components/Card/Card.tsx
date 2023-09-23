@@ -12,12 +12,22 @@ interface Props {
 const Card = (props: Props) => {
   const { imgUrl, size } = props;
 
-  const width = size == "small" ? 300 : size == "medium" ? 300 : 300;
-  const height = size == "small" ? 300 : size == "medium" ? 300 : 300;
+  const classMap = {
+    large: styles.lgItem,
+    medium: styles.mdItem,
+    small: styles.smItem,
+  };
 
   return (
-    <div>
-      <Image src={imgUrl} alt="image" width={width} height={height} />
+    <div className={styles.container}>
+      <div className={classMap[size]}>
+        <Image
+          src={imgUrl}
+          alt="image"
+          layout="fill"
+          className={styles.cardImg}
+        />
+      </div>
     </div>
   );
 };
