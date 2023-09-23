@@ -5,7 +5,7 @@ import styles from "./NavBar.module.css";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 interface Props {
   username: string;
@@ -32,7 +32,10 @@ const NavBar = (props: Props) => {
               alt="Netflix logo"
               width={128}
               height={34}
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
           </div>
         </a>
         <ul className={styles.navItems}>
@@ -52,7 +55,10 @@ const NavBar = (props: Props) => {
                 alt="Expand more"
                 width={24}
                 height={24}
-              />
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }} />
             </button>
             {showDropdown && (
               <div className={styles.navDropdown}>

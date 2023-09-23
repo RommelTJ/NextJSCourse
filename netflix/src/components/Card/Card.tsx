@@ -3,7 +3,7 @@
 import styles from "./Card.module.css";
 
 import { useState } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 interface Props {
   imgUrl?: string;
@@ -30,10 +30,10 @@ const Card = (props: Props) => {
         <Image
           src={imgSrc}
           alt="image"
-          layout="fill"
           className={styles.cardImg}
           onError={handleOnError}
-        />
+          fill
+          sizes="100vw" />
       </div>
     </div>
   );

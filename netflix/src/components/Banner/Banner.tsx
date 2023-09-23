@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 import styles from "./Banner.module.css";
 
@@ -33,7 +33,10 @@ const Banner = (props: Props) => {
                 alt="Play icon"
                 width={32}
                 height={32}
-              />
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }} />
               <span className={styles.playText}>Play</span>
             </button>
           </div>
