@@ -12,6 +12,11 @@ const CardSection = (props: Props) => {
       <h2 className={styles.title}>{title}</h2>
       <div className={styles.cardWrapper}>
         <Card imgUrl="/static/clifford.webp" size="large" />
+        <Card imgUrl="/static/clifford.webp" size="large" />
+        <Card imgUrl="/static/clifford.webp" size="large" />
+        <Card imgUrl="/static/clifford.webp" size="large" />
+        <Card imgUrl="/static/clifford.webp" size="large" />
+        <Card imgUrl="/static/clifford.webp" size="large" />
       </div>
     </section>
   );
