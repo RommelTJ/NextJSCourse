@@ -1,3 +1,4 @@
+import styles from "./page.module.css";
 import NavBar from "@/components/NavBar/NavBar";
 import Banner from "@/components/Banner/Banner";
 import CardSection from "@/components/CardSection/CardSection";
@@ -11,7 +12,10 @@ export default function Home() {
         subTitle="a very cute dog"
         imgUrl="/static/clifford.webp"
       />
-      <CardSection title="Disney" />
+
+      <div className={styles.sectionWrapper}>
+        <CardSection title="Disney" />
+      </div>
     </div>
   )
 }
