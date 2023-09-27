@@ -4,6 +4,12 @@ import Banner from "@/components/Banner/Banner";
 import CardSection from "@/components/CardSection/CardSection";
 
 export default function Home() {
+  const disneyVideos = [
+    {imgUrl: "/static/clifford.webp"},
+    {imgUrl: "/static/clifford.webp"},
+    {imgUrl: "/static/clifford.webp"},
+  ];
+
   return (
     <div>
       <NavBar username="me@rommelrico.com" />
@@ -14,7 +20,8 @@ export default function Home() {
       />
 
       <div className={styles.sectionWrapper}>
-        <CardSection title="Disney" />
+        <CardSection title="Disney" videos={disneyVideos} size="large" />
+        <CardSection title="Disney" videos={disneyVideos} size="medium" />
       </div>
     </div>
   )
