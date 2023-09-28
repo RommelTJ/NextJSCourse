@@ -2,13 +2,11 @@ import styles from "./page.module.css";
 import NavBar from "@/components/NavBar/NavBar";
 import Banner from "@/components/Banner/Banner";
 import CardSection from "@/components/CardSection/CardSection";
+import { getVideos } from "@/lib/videos";
+import { Video } from "@/models/Video";
 
 export default function Home() {
-  const disneyVideos = [
-    {imgUrl: "/static/clifford.webp"},
-    {imgUrl: "/static/clifford.webp"},
-    {imgUrl: "/static/clifford.webp"},
-  ];
+  const disneyVideos: Video[] = getVideos();
 
   return (
     <div>

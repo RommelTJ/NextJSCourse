@@ -1,9 +1,10 @@
 import styles from "./CardSection.module.css";
 import Card from "@/components/Card/Card";
+import {Video} from "@/models/Video";
 
 interface Props {
   title: string;
-  videos: {imgUrl: string}[];
+  videos: Video[];
   size: "small"|"medium"|"large";
 }
 
