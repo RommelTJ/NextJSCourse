@@ -5,8 +5,8 @@ import CardSection from "@/components/CardSection/CardSection";
 import { getVideos } from "@/lib/videos";
 import { Video } from "@/models/Video";
 
-export default function Home() {
-  const disneyVideos: Video[] = getVideos();
+const Home = async () => {
+  const disneyVideos: Video[] = await getVideos();
 
   return (
     <div>
@@ -24,3 +24,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home;

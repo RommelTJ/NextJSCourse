@@ -4,12 +4,12 @@ import {Video} from "@/models/Video";
 
 interface Props {
   title: string;
-  videos: Video[];
+  videos?: Video[];
   size: "small"|"medium"|"large";
 }
 
 const CardSection = (props: Props) => {
-  const { title, videos, size } = props;
+  const { title, videos = [], size } = props;
 
   return (
     <section className={styles.container}>
