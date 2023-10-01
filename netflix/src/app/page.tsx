@@ -6,7 +6,9 @@ import { getVideos } from "@/lib/videos";
 import { Video } from "@/models/Video";
 
 const Home = async () => {
-  const disneyVideos: Video[] = await getVideos();
+  const disneyVideos: Video[] = await getVideos("Disney Trailer");
+  const productivityVideos: Video[] = await getVideos("Productivity");
+  const travelVideos: Video[] = await getVideos("Travel");
 
   return (
     <div>
@@ -19,7 +21,8 @@ const Home = async () => {
 
       <div className={styles.sectionWrapper}>
         <CardSection title="Disney" videos={disneyVideos} size="large" />
-        <CardSection title="Disney" videos={disneyVideos} size="medium" />
+        <CardSection title="Travel" videos={travelVideos} size="small" />
+        <CardSection title="Productivity" videos={productivityVideos} size="medium" />
       </div>
     </div>
   )
