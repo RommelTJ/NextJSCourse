@@ -38,3 +38,9 @@ export const getVideos = async (searchQuery: string): Promise<Video[]> => {
   const URL = `search?part=snippet&q=${searchQuery}&type=video`;
   return getCommonVideos(URL);
 };
+
+export const getPopularVideos = () => {
+  const URL =
+    "videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US";
+  return getCommonVideos(URL);
+};
