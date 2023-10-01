@@ -5,11 +5,12 @@ interface YoutubeVideo {
   id: string | { videoId: string };
 }
 
-export const getVideos = async (searchQuery: string): Promise<Video[]> => {
+export const getCommonVideos = async (url: string) => {
   const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
   try {
+    const BASE_URL = "youtube.googleapis.com/youtube/v3";
     const response = await fetch(
-      `https://youtube.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=25&q=${searchQuery}&key=${YOUTUBE_API_KEY}`
+      `https://${BASE_URL}/${url}&maxResults=25&key=${YOUTUBE_API_KEY}`
     );
     const data = await response.json();
     if (data?.error) {
@@ -31,4 +32,9 @@ export const getVideos = async (searchQuery: string): Promise<Video[]> => {
     console.error("Something went wrong with video library", e);
     return [];
   }
+}
+
+export const getVideos = async (searchQuery: string): Promise<Video[]> => {
+  const URL = `search?part=snippet&q=${searchQuery}&type=video`;
+  return getCommonVideos(URL);
 };
