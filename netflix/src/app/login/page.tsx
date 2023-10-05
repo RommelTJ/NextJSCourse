@@ -10,8 +10,8 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <header>
+    <div className={styles.container}>
+      <header className={styles.header}>
         <div className={styles.headerWrapper}>
           <Link className={styles.logoLink} href="/">
             <div className={styles.logoWrapper}>
