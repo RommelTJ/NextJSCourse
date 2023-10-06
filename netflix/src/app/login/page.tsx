@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./login.module.css";
 import {ChangeEvent, useState} from "react";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [userMsg, setUserMsg] = useState("");
+  const router = useRouter();
 
   const handleOnChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setUserMsg("");
@@ -16,8 +18,8 @@ const Login = () => {
   };
 
   const handleLoginWithEmail = async () => {
-    if (email) {
-      // route to dashboard
+    if (email === "test@test.com") {
+      router.push("/");
     } else {
       // show user message
       setUserMsg("Enter a valid email address");
