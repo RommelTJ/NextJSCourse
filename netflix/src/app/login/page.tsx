@@ -3,10 +3,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./login.module.css";
+import {ChangeEvent, useState} from "react";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [userMsg, setUserMsg] = useState("");
+
+  const handleOnChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserMsg("");
+    const email = e.target.value;
+    setEmail(email);
+  };
+
   const handleLoginWithEmail = async () => {
-    console.log("TODO: handleLoginWithEmail");
+    if (email) {
+      // route to dashboard
+    } else {
+      // show user message
+      setUserMsg("Enter a valid email address");
+    }
   };
 
   return (
@@ -33,9 +48,10 @@ const Login = () => {
             type="text"
             placeholder="Email address"
             className={styles.emailInput}
+            onChange={handleOnChangeEmail}
           />
 
-          <p className={styles.userMsg}></p>
+          <p className={styles.userMsg}>{userMsg}</p>
           <button onClick={handleLoginWithEmail} className={styles.loginBtn}>
             Sign In
           </button>
