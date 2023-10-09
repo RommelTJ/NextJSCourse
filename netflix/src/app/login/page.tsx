@@ -6,6 +6,8 @@ import styles from "./login.module.css";
 import {ChangeEvent, useState} from "react";
 import { useRouter } from "next/navigation";
 import { magic } from "@/lib/magicClient";
+import {InstanceWithExtensions, SDKBase} from "@magic-sdk/provider";
+import {MagicSDKExtensionsOption} from "magic-sdk";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -22,10 +24,15 @@ const Login = () => {
     if (email === "rommeltj@gmail.com") {
       //  log in a user by their email
       try {
-        const didToken = await magic.auth.loginWithMagicLink({
-          email,
-        });
-        console.log({ didToken });
+        if (magic !== false) {
+          const magicInstance: InstanceWithExtensions<SDKBase, MagicSDKExtensionsOption<string>> = magic
+          const didToken = await magicInstance.auth.loginWithMagicLink({
+            email,
+          });
+          console.log({ didToken });
+        } else {
+          console.error("Magic instance not set up");
+        }
       } catch (error) {
         // Handle errors if required!
         console.error("Something went wrong logging in", error);
