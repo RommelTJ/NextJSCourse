@@ -12,6 +12,7 @@ import {MagicSDKExtensionsOption} from "magic-sdk";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [userMsg, setUserMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleOnChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +22,7 @@ const Login = () => {
   };
 
   const handleLoginWithEmail = async () => {
+    setIsLoading(true);
     if (email === "rommeltj@gmail.com") {
       //  log in a user by their email
       try {
@@ -30,17 +32,21 @@ const Login = () => {
             email,
           });
           if (didToken) {
+            setIsLoading(false);
             router.push("/");
           }
         } else {
+          setIsLoading(false);
           console.error("Magic instance not set up");
         }
       } catch (error) {
         // Handle errors if required!
+        setIsLoading(false);
         console.error("Something went wrong logging in", error);
       }
     } else {
       // show user message
+      setIsLoading(false);
       setUserMsg("Enter a valid email address");
     }
   };
@@ -74,7 +80,7 @@ const Login = () => {
 
           <p className={styles.userMsg}>{userMsg}</p>
           <button onClick={handleLoginWithEmail} className={styles.loginBtn}>
-            Sign In
+            {isLoading ? "Loading..." : "Sign In"}
           </button>
         </div>
       </main>
