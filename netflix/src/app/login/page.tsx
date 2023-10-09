@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./login.module.css";
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useState, useEffect} from "react";
 import { useRouter } from "next/navigation";
 import { magic } from "@/lib/magicClient";
 import {InstanceWithExtensions, SDKBase} from "@magic-sdk/provider";
@@ -14,6 +14,15 @@ const Login = () => {
   const [userMsg, setUserMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const handleComplete = () => {
+      setIsLoading(false);
+    };
+    return () => {
+      handleComplete();
+    };
+  }, [router]);
 
   const handleOnChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setUserMsg("");
