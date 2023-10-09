@@ -4,14 +4,12 @@ import Banner from "@/components/Banner/Banner";
 import CardSection from "@/components/CardSection/CardSection";
 import {getPopularVideos, getVideos} from "@/lib/videos";
 import { Video } from "@/models/Video";
-import { magic } from "@/lib/magicClient";
 
 const Home = async () => {
   const disneyVideos: Video[] = await getVideos("Disney Trailer");
   const productivityVideos: Video[] = await getVideos("Productivity");
   const travelVideos: Video[] = await getVideos("Travel");
   const popularVideos: Video[] = await getPopularVideos();
-  console.log("magic: ", magic);
 
   return (
     <div>
