@@ -29,7 +29,9 @@ const Login = () => {
           const didToken = await magicInstance.auth.loginWithMagicLink({
             email,
           });
-          console.log({ didToken });
+          if (didToken) {
+            router.push("/");
+          }
         } else {
           console.error("Magic instance not set up");
         }
