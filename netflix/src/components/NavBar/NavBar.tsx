@@ -4,17 +4,29 @@ import styles from "./NavBar.module.css";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import {magic} from "@/lib/magicClient";
 
-interface Props {
-  username: string;
-}
 
-const NavBar = (props: Props) => {
-  const { username } = props;
+const NavBar = () => {
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    async function getUsername() {
+      try {
+        const { email } = await magic.user.getMetadata();
+        if (email) {
+          setUsername(email);
+        }
+      } catch (error) {
+        console.log("Error retrieving email:", error);
+      }
+    }
+    const _ = getUsername();
+  }, []);
 
   const handleOnClickHome = () => router.push("/");
 

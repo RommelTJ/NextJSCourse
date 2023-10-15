@@ -13,7 +13,7 @@ const Home = async () => {
 
   return (
     <div>
-      <NavBar username="me@rommelrico.com" />
+      <NavBar />
       <Banner
         title="Clifford the red dog"
         subTitle="a very cute dog"

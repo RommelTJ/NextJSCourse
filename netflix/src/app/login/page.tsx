@@ -32,31 +32,24 @@ const Login = () => {
 
   const handleLoginWithEmail = async () => {
     setIsLoading(true);
-    if (email === "rommeltj@gmail.com") {
-      //  log in a user by their email
-      try {
-        if (magic !== false) {
-          const magicInstance: InstanceWithExtensions<SDKBase, MagicSDKExtensionsOption<string>> = magic
-          const didToken = await magicInstance.auth.loginWithMagicLink({
-            email,
-          });
-          if (didToken) {
-            setIsLoading(false);
-            router.push("/");
-          }
-        } else {
+    try {
+      if (magic !== false) {
+        const magicInstance: InstanceWithExtensions<SDKBase, MagicSDKExtensionsOption<string>> = magic
+        const didToken = await magicInstance.auth.loginWithMagicLink({
+          email,
+        });
+        if (didToken) {
           setIsLoading(false);
-          console.error("Magic instance not set up");
+          router.push("/");
         }
-      } catch (error) {
-        // Handle errors if required!
+      } else {
         setIsLoading(false);
-        console.error("Something went wrong logging in", error);
+        console.error("Magic instance not set up");
       }
-    } else {
-      // show user message
+    } catch (error) {
+      // Handle errors if required!
       setIsLoading(false);
-      setUserMsg("Enter a valid email address");
+      console.error("Something went wrong logging in", error);
     }
   };
 
