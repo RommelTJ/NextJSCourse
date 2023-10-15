@@ -17,6 +17,7 @@ const NavBar = () => {
   useEffect(() => {
     async function getUsername() {
       try {
+        // @ts-ignore
         const { email } = await magic.user.getMetadata();
         if (email) {
           setUsername(email);
@@ -33,6 +34,17 @@ const NavBar = () => {
   const handleOnClickMyList = () => router.push("/browse/my-list");
 
   const handleShowDropdown = () => setShowDropdown(!showDropdown);
+
+  const handleSignOut = async () => {
+    try {
+      // @ts-ignore
+      await magic.user.logout();
+      router.push("/login");
+    } catch (error) {
+      console.error("Error logging out", error);
+      router.push("/login");
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -75,7 +87,7 @@ const NavBar = () => {
             {showDropdown && (
               <div className={styles.navDropdown}>
                 <div>
-                  <Link href="/login" className={styles.linkName}>Sign out</Link>
+                  <a onClick={handleSignOut} className={styles.linkName}>Sign out</a>
                   <div className={styles.lineWrapper}></div>
                 </div>
               </div>
