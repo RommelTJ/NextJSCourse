@@ -4,6 +4,7 @@ import Banner from "@/components/Banner/Banner";
 import CardSection from "@/components/CardSection/CardSection";
 import {getPopularVideos, getVideos} from "@/lib/videos";
 import { Video } from "@/models/Video";
+import LoginRouter from "@/components/LoginRouter/LoginRouter";
 
 const Home = async () => {
   const disneyVideos: Video[] = await getVideos("Disney Trailer");
@@ -13,6 +14,7 @@ const Home = async () => {
 
   return (
     <div>
+      <LoginRouter />
       <NavBar />
       <Banner
         title="Clifford the red dog"
