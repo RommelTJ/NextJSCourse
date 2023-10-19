@@ -1,11 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import {JSX, useEffect, useState} from "react";
 import { useRouter } from "next/navigation";
 import { magic } from "@/lib/magicClient";
+import Loading from "@/components/Loading/Loading";
 
-const LoginRouter = () => {
+interface Props {
+  child: JSX.Element
+}
+
+const LoginRouter = (props: Props) => {
+  const { child } = props;
   const router = useRouter();
+  const [loading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleLoggedIn = async () => {
@@ -18,12 +25,13 @@ const LoginRouter = () => {
         // route to /login
         router.push("/login");
       }
+      setIsLoading(false);
     };
 
     const _ = handleLoggedIn();
   }, []);
 
-  return null;
+  return loading ? <Loading /> : child;
 };
 
 export default LoginRouter;

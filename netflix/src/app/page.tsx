@@ -13,22 +13,25 @@ const Home = async () => {
   const popularVideos: Video[] = await getPopularVideos();
 
   return (
-    <div>
-      <LoginRouter />
-      <NavBar />
-      <Banner
-        title="Clifford the red dog"
-        subTitle="a very cute dog"
-        imgUrl="/static/clifford.webp"
-      />
+    <LoginRouter
+      child={
+      <div>
+        <NavBar />
+        <Banner
+          title="Clifford the red dog"
+          subTitle="a very cute dog"
+          imgUrl="/static/clifford.webp"
+        />
 
-      <div className={styles.sectionWrapper}>
-        <CardSection title="Disney" videos={disneyVideos} size="large" />
-        <CardSection title="Travel" videos={travelVideos} size="small" />
-        <CardSection title="Productivity" videos={productivityVideos} size="medium" />
-        <CardSection title="Popular" videos={popularVideos} size="small" />
+        <div className={styles.sectionWrapper}>
+          <CardSection title="Disney" videos={disneyVideos} size="large" />
+          <CardSection title="Travel" videos={travelVideos} size="small" />
+          <CardSection title="Productivity" videos={productivityVideos} size="medium" />
+          <CardSection title="Popular" videos={popularVideos} size="small" />
+        </div>
       </div>
-    </div>
+      }
+    />
   )
 }
 
