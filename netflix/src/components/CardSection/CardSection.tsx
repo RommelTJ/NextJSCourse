@@ -1,4 +1,5 @@
 import styles from "./CardSection.module.css";
+import Link from "next/link";
 import Card from "@/components/Card/Card";
 import {Video} from "@/models/Video";
 
@@ -16,7 +17,7 @@ const CardSection = (props: Props) => {
       <h2 className={styles.title}>{title}</h2>
       <div className={styles.cardWrapper}>
         {videos.map((video, idx) => {
-          return <Card key={idx} id={idx} imgUrl={video.imgUrl} size={size} />;
+          return <Link key={idx} href={`/video/${video.id}`}><Card id={idx} imgUrl={video.imgUrl} size={size} /></Link>;
         })}
       </div>
     </section>
