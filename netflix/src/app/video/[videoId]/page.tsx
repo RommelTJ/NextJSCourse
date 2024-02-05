@@ -8,11 +8,11 @@ const Video = ({ params }: { params: { videoId: string } }) => {
   const router = useRouter();
   return (
     <div>
-      video page: {params.videoId}
       <Modal
         isOpen={true}
         contentLabel="Watch the video"
         onRequestClose={() => router.back()}
+        className={styles.modal}
         overlayClassName={styles.overlay}
       >
         <div>Modal body</div>
