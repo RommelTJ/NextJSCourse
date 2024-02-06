@@ -11,7 +11,8 @@ const Video = ({ params }: { params: { videoId: string } }) => {
   const video = {
     title: "Hi cute dog",
     publishTime: "1990-01-01",
-    description: "A big red dog that is super cute, can he get any bigger?",
+    description:
+      "A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger?",
     channelTitle: "Paramount Pictures",
     viewCount: 10000,
   };
