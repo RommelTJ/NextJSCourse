@@ -16,6 +16,7 @@ const Video = ({ params }: { params: { videoId: string } }) => {
         overlayClassName={styles.overlay}
       >
         <iframe
+          className={styles.videoPlayer}
           id="ytplayer"
           type="text/html"
           width="100%"
