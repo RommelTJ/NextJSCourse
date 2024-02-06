@@ -30,11 +30,10 @@ const Video = ({ params }: { params: { videoId: string } }) => {
         <iframe
           className={styles.videoPlayer}
           id="ytplayer"
-          type="text/html"
           width="100%"
           height="360"
           src={`https://www.youtube.com/embed/${params.videoId}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
-          frameBorder="0"
+          frameBorder={0}
         ></iframe>
 
         <div className={styles.modalBody}>
