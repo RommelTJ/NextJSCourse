@@ -4,33 +4,15 @@ import styles from "./Video.module.css";
 import Modal from "react-modal";
 import {useRouter} from "next/navigation";
 import clsx from "classnames";
+import {getYoutubeVideoById} from "@/lib/videos";
+import {Video} from "@/models/Video";
 
-export type YoutubeVideo = {
-  title: string;
-  publishTime: string;
-  description: string;
-  channelTitle: string;
-  viewCount: number;
-}
 
 // i.e. getStaticProps
-async function getVideo(): Promise<YoutubeVideo> {
-  // TODO: Fetch this from the YouTube API
-  const video: YoutubeVideo = {
-    title: "Hi cute dog",
-    publishTime: "1990-01-01",
-    description:
-      "A big red dog that is super cute, can he get any bigger? A big red dog that is super cute, can he get any bigger?",
-    channelTitle: "Paramount Pictures",
-    viewCount: 10000,
-  };
-
-  // revalidate does Incremental Static Regeneration (ISR)
-  // const res = await fetch(`https://.../posts`, { next: { revalidate: 60 } })
-  // const data = await res.json()
-  // return data.posts
-
-  return Promise.resolve(video)
+async function getVideo(): Promise<Video|undefined> {
+  const videoId = "4zH5iYM4wJo";
+  const videoArray = await getYoutubeVideoById(videoId);
+  return videoArray.length ? videoArray[0] : undefined;
 }
 
 // true: (default) Dynamic segments not included in generateStaticParams are generated on demand.
@@ -43,7 +25,11 @@ export async function generateStaticParams() {
 const Video = async ({ params }: { params: { videoId: string } }) => {
   const router = useRouter();
   const video = await getVideo();
-  const { title, publishTime, description, channelTitle, viewCount } = video;
+  const title = video?.title;
+  const publishTime = video?.publishedAt;
+  const description = video?.description;
+  const channelTitle = video?.channelTitle;
+  const viewCount = video?.statistics?.viewCount || 0;
 
   return (
     <div>
