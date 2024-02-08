@@ -1,16 +1,10 @@
-"use client";
-
-import styles from "./Video.module.css";
-import Modal from "react-modal";
-import {useRouter} from "next/navigation";
-import clsx from "classnames";
 import {getYoutubeVideoById} from "@/lib/videos";
 import {Video} from "@/models/Video";
+import VideoModal from "@/components/VideoModal/VideoModal";
 
 
 // i.e. getStaticProps
-async function getVideo(): Promise<Video|undefined> {
-  const videoId = "4zH5iYM4wJo";
+async function getVideo(videoId: string): Promise<Video|undefined> {
   const videoArray = await getYoutubeVideoById(videoId);
   return videoArray.length ? videoArray[0] : undefined;
 }
@@ -23,52 +17,10 @@ export async function generateStaticParams() {
 }
 
 const Video = async ({ params }: { params: { videoId: string } }) => {
-  const router = useRouter();
-  const video = await getVideo();
-  const title = video?.title;
-  const publishTime = video?.publishedAt;
-  const description = video?.description;
-  const channelTitle = video?.channelTitle;
-  const viewCount = video?.statistics?.viewCount || 0;
-
+  const video = await getVideo(params.videoId);
   return (
     <div>
-      <Modal
-        isOpen={true}
-        contentLabel="Watch the video"
-        onRequestClose={() => router.back()}
-        className={styles.modal}
-        overlayClassName={styles.overlay}
-      >
-        <iframe
-          className={styles.videoPlayer}
-          id="ytplayer"
-          width="100%"
-          height="360"
-          src={`https://www.youtube.com/embed/${params.videoId}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
-          frameBorder={0}
-        ></iframe>
-
-        <div className={styles.modalBody}>
-          <div className={styles.modalBodyContent}>
-            <div className={styles.col1}>
-              <p className={styles.publishTime}>{publishTime}</p>
-              <p className={styles.title}>{title}</p>
-              <p className={styles.description}>{description}</p>
-            </div>
-            <div className={styles.col2}>
-              <p className={clsx(styles.subText, styles.subTextWrapper)}>
-                <span className={styles.textColor}>Cast: </span>
-                <span className={styles.channelTitle}>{channelTitle}</span>
-              </p>
-              <p className={clsx(styles.subText, styles.subTextWrapper)}>
-                <span className={styles.textColor}>View Count: </span>
-                <span className={styles.channelTitle}>{viewCount}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </Modal>
+      <VideoModal video={video} />
     </div>
   );
 };

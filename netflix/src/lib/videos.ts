@@ -2,9 +2,10 @@ import { Video } from "@/models/Video";
 
 interface YoutubeVideo {
   snippet: {
-    title: string,
-    thumbnails: {high: {url: string}},
+    title: string;
     description: string;
+    localized?: { title: string; description: string; },
+    thumbnails: {high: {url: string}},
     publishedAt: string;
     channelTitle: string;
   };
@@ -28,10 +29,10 @@ export const getCommonVideos = async (url: string, revalidate?: { revalidate: nu
     return data.items.map((item: YoutubeVideo) => {
       const id = typeof item.id == "string" ? item.id : item.id.videoId;
       return {
-        title: item.snippet.title,
+        title: item.snippet.localized?.title || item.snippet.title,
         imgUrl: item.snippet.thumbnails.high.url,
         id,
-        description: item.snippet.description,
+        description: item.snippet.localized?.description || item.snippet.description,
         publishTime: item.snippet.publishedAt,
         channelTitle: item.snippet.channelTitle,
         statistics: item.statistics ? item.statistics : { viewCount: 0 },
@@ -56,5 +57,6 @@ export const getPopularVideos = (): Promise<Video[]> => {
 
 export const getYoutubeVideoById = (videoId: string): Promise<Video[]> => {
   const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
-  return getCommonVideos(URL, { revalidate: 60 });
+  console.log("Here with videoId: ", videoId);
+  return getCommonVideos(URL, { revalidate: 10 });
 };
