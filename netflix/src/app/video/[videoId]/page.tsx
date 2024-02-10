@@ -1,6 +1,7 @@
 import {getYoutubeVideoById} from "@/lib/videos";
 import {Video} from "@/models/Video";
 import VideoModal from "@/components/VideoModal/VideoModal";
+import NavBar from "@/components/NavBar/NavBar";
 
 
 // i.e. getStaticProps
@@ -20,6 +21,7 @@ const Video = async ({ params }: { params: { videoId: string } }) => {
   const video = await getVideo(params.videoId);
   return (
     <div>
+      <NavBar />
       <VideoModal video={video} />
     </div>
   );

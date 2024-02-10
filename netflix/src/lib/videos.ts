@@ -57,6 +57,5 @@ export const getPopularVideos = (): Promise<Video[]> => {
 
 export const getYoutubeVideoById = (videoId: string): Promise<Video[]> => {
   const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
-  console.log("Here with videoId: ", videoId);
   return getCommonVideos(URL, { revalidate: 10 });
 };
