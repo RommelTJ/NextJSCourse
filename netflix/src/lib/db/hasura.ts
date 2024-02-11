@@ -3,7 +3,7 @@ This is an example snippet - you should consider tailoring it
 to your service.
 */
 
-async function fetchGraphQL(operationsDoc: string, operationName: string, variables: object) {
+async function fetchGraphQL(operationsDoc: string, operationName: string, variables: Record<string, any>) {
   const result = await fetch("<graphql-url>", {
     method: "POST",
     headers: {
