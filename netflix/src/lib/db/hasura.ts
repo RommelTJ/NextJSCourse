@@ -4,10 +4,10 @@ to your service.
 */
 
 async function fetchGraphQL(operationsDoc: string, operationName: string, variables: Record<string, any>) {
-  const result = await fetch("<graphql-url>", {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_HASURA_ADMIN_URL}`, {
     method: "POST",
     headers: {
-      "x-hasura-admin-secret": "<key>",
+      "x-hasura-admin-secret": `${process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET}`,
     },
     body: JSON.stringify({
       query: operationsDoc,
@@ -19,7 +19,8 @@ async function fetchGraphQL(operationsDoc: string, operationName: string, variab
   return await result.json();
 }
 
-const operationsDoc = `
+function fetchMyQuery() {
+  const operationsDoc = `
   query MyQuery {
     users {
       email
@@ -29,8 +30,6 @@ const operationsDoc = `
     }
   }
 `;
-
-function fetchMyQuery() {
   return fetchGraphQL(operationsDoc, "MyQuery", {});
 }
 
@@ -43,7 +42,7 @@ export async function startFetchMyQuery() {
   }
 
   // do something great with this precious data
-  console.log(data);
+  console.log("data: ", data);
 }
 
 startFetchMyQuery().then();

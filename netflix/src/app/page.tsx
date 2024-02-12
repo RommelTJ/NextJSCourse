@@ -12,7 +12,7 @@ const Home = async () => {
   const productivityVideos: Video[] = await getVideos("Productivity");
   const travelVideos: Video[] = await getVideos("Travel");
   const popularVideos: Video[] = await getPopularVideos();
-  // const _ = startFetchMyQuery();
+  const _ = await startFetchMyQuery();
 
   return (
     <LoginRouter
