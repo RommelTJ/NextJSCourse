@@ -7,5 +7,6 @@ export async function POST(request: NextRequest) {
   }
   const didToken = auth.substring(7);
   console.log("didToken", didToken);
+  // TODO: Invoke Magic
   return NextResponse.json({ done: true });
 }
