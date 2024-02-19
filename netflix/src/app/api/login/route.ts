@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
     },
     process.env.HASURA_JWT_SECRET_KEY || "",
   );
+  console.log("issuer: ", metadata.issuer);
   console.log({ jwtToken });
 
   return NextResponse.json({ done: true });

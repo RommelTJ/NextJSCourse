@@ -20,7 +20,7 @@ const NavBar = () => {
         const { email, issuer } = await magic.user.getMetadata();
         // @ts-ignore
         const didToken = await magic.user.getIdToken();
-        console.log({ didToken});
+        // console.log({ didToken});
         if (email) {
           setUsername(email);
         }

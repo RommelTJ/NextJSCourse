@@ -1,16 +1,9 @@
-/*
-This is an example snippet - you should consider tailoring it
-to your service.
-*/
-
-async function fetchGraphQL(operationsDoc: string, operationName: string, variables: Record<string, any>) {
+async function fetchGraphQL(operationsDoc: string, operationName: string, variables: Record<string, any>, token: string) {
   const result = await fetch(`${process.env.NEXT_PUBLIC_HASURA_ADMIN_URL}`, {
     method: "POST",
     headers: {
-      "X-Hasura-Role": "user",
-      "X-Hasura-User-Id": "notrommel",
-      // Authorization: "Bearer <token>",
-      "X-Hasura-Admin-Secret": `${process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET}`,
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: operationsDoc,
@@ -22,7 +15,7 @@ async function fetchGraphQL(operationsDoc: string, operationName: string, variab
   return await result.json();
 }
 
-function fetchMyQuery() {
+function fetchMyQuery(token: string) {
   const operationsDoc = `
   query MyQuery {
     users {
@@ -33,15 +26,15 @@ function fetchMyQuery() {
     }
   }
 `;
-  return fetchGraphQL(operationsDoc, "MyQuery", {});
+  return fetchGraphQL(operationsDoc, "MyQuery", {}, token);
 }
 
 export async function startFetchMyQuery() {
-  const { errors, data } = await fetchMyQuery();
+  const { errors, data } = await fetchMyQuery("token");
 
   if (errors) {
     // handle those errors like a pro
-    console.error(errors);
+    console.error("errors: ", errors);
   }
 
   // do something great with this precious data
