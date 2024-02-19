@@ -1,4 +1,20 @@
-async function fetchGraphQL(operationsDoc: string, operationName: string, variables: Record<string, any>, token: string) {
+export async function isNewUser(token: string, didToken: string) {
+  const operationsDoc = `
+  query MyQuery {
+    users(where: {issuer: {_eq: "${didToken}"}}) {
+      email
+      id
+      issuer
+      publicAddress
+    }
+  }
+`;
+  const response = await queryHasuraGQL(operationsDoc, "MyQuery", {}, token);
+  console.log({ response });
+  return response?.data?.users?.length === 0;
+}
+
+async function queryHasuraGQL(operationsDoc: string, operationName: string, variables: Record<string, any>, token: string) {
   const result = await fetch(`${process.env.NEXT_PUBLIC_HASURA_ADMIN_URL}`, {
     method: "POST",
     headers: {
@@ -15,10 +31,10 @@ async function fetchGraphQL(operationsDoc: string, operationName: string, variab
   return await result.json();
 }
 
-function fetchMyQuery(token: string) {
+function fetchMyQuery() {
   const operationsDoc = `
   query MyQuery {
-    users {
+    users(where: {issuer: {_eq: "${"didToken"}"}}) {
       email
       id
       issuer
@@ -26,11 +42,11 @@ function fetchMyQuery(token: string) {
     }
   }
 `;
-  return fetchGraphQL(operationsDoc, "MyQuery", {}, token);
+  return queryHasuraGQL(operationsDoc, "MyQuery", {}, "jwtToken");
 }
 
 export async function startFetchMyQuery() {
-  const { errors, data } = await fetchMyQuery("token");
+  const { errors, data } = await fetchMyQuery();
 
   if (errors) {
     // handle those errors like a pro
@@ -38,7 +54,7 @@ export async function startFetchMyQuery() {
   }
 
   // do something great with this precious data
-  // console.log("data: ", data);
+  console.log("data: ", data);
 }
 
 startFetchMyQuery().then();
