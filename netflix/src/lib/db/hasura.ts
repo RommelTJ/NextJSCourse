@@ -45,7 +45,7 @@ export async function startFetchMyQuery() {
   }
 
   // do something great with this precious data
-  console.log("data: ", data);
+  // console.log("data: ", data);
 }
 
 startFetchMyQuery().then();
