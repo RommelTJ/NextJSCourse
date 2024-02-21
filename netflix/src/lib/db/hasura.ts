@@ -1,16 +1,22 @@
-export async function isNewUser(token: string, didToken: string) {
+export async function isNewUser(token: string, issuer: string) {
   const operationsDoc = `
-  query MyQuery {
-    users(where: {issuer: {_eq: "${didToken}"}}) {
-      email
+  query isNewUser($issuer: String!) {
+    users(where: {issuer: {_eq: $issuer}}) {
       id
+      email
       issuer
-      publicAddress
     }
   }
 `;
-  const response = await queryHasuraGQL(operationsDoc, "MyQuery", {}, token);
-  console.log({ response });
+  const response = await queryHasuraGQL(
+    operationsDoc,
+    "isNewUser",
+    {
+      issuer,
+    },
+    token
+  );
+  console.log({ response, issuer });
   return response?.data?.users?.length === 0;
 }
 
@@ -30,31 +36,3 @@ async function queryHasuraGQL(operationsDoc: string, operationName: string, vari
 
   return await result.json();
 }
-
-function fetchMyQuery() {
-  const operationsDoc = `
-  query MyQuery {
-    users(where: {issuer: {_eq: "${"didToken"}"}}) {
-      email
-      id
-      issuer
-      publicAddress
-    }
-  }
-`;
-  return queryHasuraGQL(operationsDoc, "MyQuery", {}, "jwtToken");
-}
-
-export async function startFetchMyQuery() {
-  const { errors, data } = await fetchMyQuery();
-
-  if (errors) {
-    // handle those errors like a pro
-    console.error("errors: ", errors);
-  }
-
-  // do something great with this precious data
-  console.log("data: ", data);
-}
-
-startFetchMyQuery().then();
