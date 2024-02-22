@@ -1,3 +1,33 @@
+import { MagicUserMetadata } from "@magic-sdk/admin";
+
+export async function createNewUser(token: string, metadata: MagicUserMetadata) {
+  const operationsDoc = `
+  mutation createNewUser($issuer: String!, $email: String!, $publicAddress: String!) {
+    insert_users(objects: {email: $email, issuer: $issuer, publicAddress: $publicAddress}) {
+      returning {
+        email
+        id
+        issuer
+      }
+    }
+  }
+`;
+
+  const { issuer, email, publicAddress } = metadata;
+  const response = await queryHasuraGQL(
+    operationsDoc,
+    "createNewUser",
+    {
+      issuer,
+      email,
+      publicAddress,
+    },
+    token
+  );
+  console.log({ response, issuer });
+  return response;
+}
+
 export async function isNewUser(token: string, issuer: string) {
   const operationsDoc = `
   query isNewUser($issuer: String!) {

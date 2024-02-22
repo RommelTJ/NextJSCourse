@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {magicAdmin} from "@/lib/magic";
 import jwt from "jsonwebtoken";
-import { isNewUser } from "@/lib/db/hasura";
+import { createNewUser, isNewUser } from "@/lib/db/hasura";
 
 export async function POST(request: NextRequest) {
   const auth = request.headers.get('Authorization');
@@ -27,5 +27,11 @@ export async function POST(request: NextRequest) {
   console.log({ jwtToken });
   // Check if user exists
   const isNewUserResponse = await isNewUser(jwtToken, metadata.issuer || "");
-  return NextResponse.json({ done: true, isNewUser: isNewUserResponse });
+  if (isNewUserResponse) {
+    const createNewUserMutation = await createNewUser(jwtToken, metadata);
+    console.log({ createNewUserMutation });
+    return NextResponse.json({ done: true, msg: "is a new user" });
+  } else {
+    return NextResponse.json({ done: true, msg: "not a new user" });
+  }
 }
