@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import {magicAdmin} from "@/lib/magic";
 import jwt from "jsonwebtoken";
 import { createNewUser, isNewUser } from "@/lib/db/hasura";
+import { setTokenCookie } from "@/lib/cookies";
+
 
 export async function POST(request: NextRequest) {
   const auth = request.headers.get('Authorization');
@@ -30,8 +32,13 @@ export async function POST(request: NextRequest) {
   if (isNewUserResponse) {
     const createNewUserMutation = await createNewUser(jwtToken, metadata);
     console.log({ createNewUserMutation });
+    //set the cookie
+    const cookie = setTokenCookie(jwtToken);
+    console.log({ cookie });
     return NextResponse.json({ done: true, msg: "is a new user" });
   } else {
+    const cookie = setTokenCookie(jwtToken);
+    console.log({ cookie });
     return NextResponse.json({ done: true, msg: "not a new user" });
   }
 }
