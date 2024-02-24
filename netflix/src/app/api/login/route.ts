@@ -25,20 +25,9 @@ export async function POST(request: NextRequest) {
     },
     process.env.HASURA_JWT_SECRET_KEY || "",
   );
-  console.log("issuer: ", metadata.issuer);
-  console.log({ jwtToken });
-  // Check if user exists
   const isNewUserResponse = await isNewUser(jwtToken, metadata.issuer || "");
-  if (isNewUserResponse) {
-    const createNewUserMutation = await createNewUser(jwtToken, metadata);
-    console.log({ createNewUserMutation });
-    //set the cookie
-    const cookie = setTokenCookie(jwtToken);
-    console.log({ cookie });
-    return NextResponse.json({ done: true, msg: "is a new user" });
-  } else {
-    const cookie = setTokenCookie(jwtToken);
-    console.log({ cookie });
-    return NextResponse.json({ done: true, msg: "not a new user" });
-  }
+  if (isNewUserResponse) await createNewUser(jwtToken, metadata);
+  const resp = NextResponse.json({ done: true });
+  resp.cookies.set(setTokenCookie(jwtToken));
+  return resp;
 }
