@@ -9,14 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@magic-sdk/admin": "^2.1.0",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "20.5.4",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
     "classnames": "^2.3.2",
+    "cookie": "^0.6.0",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "framer-motion": "^10.16.4",
+    "jsonwebtoken": "^9.0.2",
     "magic-sdk": "^20.1.1",
     "next": "13.4.19",
     "postcss": "8.4.28",
@@ -27,6 +31,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@types/cookie": "^0.6.0",
     "@types/react-modal": "^3.16.3"
   }
 }

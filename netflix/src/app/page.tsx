@@ -5,14 +5,12 @@ import CardSection from "@/components/CardSection/CardSection";
 import {getPopularVideos, getVideos} from "@/lib/videos";
 import { Video } from "@/models/Video";
 import LoginRouter from "@/components/LoginRouter/LoginRouter";
-import {startFetchMyQuery} from "@/lib/db/hasura";
 
 const Home = async () => {
   const disneyVideos: Video[] = await getVideos("Disney Trailer");
   const productivityVideos: Video[] = await getVideos("Productivity");
   const travelVideos: Video[] = await getVideos("Travel");
   const popularVideos: Video[] = await getPopularVideos();
-  const _ = await startFetchMyQuery();
 
   return (
     <LoginRouter

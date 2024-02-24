@@ -39,8 +39,21 @@ const Login = () => {
           email,
         });
         if (didToken) {
-          setIsLoading(false);
-          router.push("/");
+          console.log("HERE1");
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          const loggedInResponse = await response.json();
+          if (loggedInResponse.done) {
+            router.push("/");
+          } else {
+            setIsLoading(false);
+            setUserMsg("Something went wrong logging in");
+          }
         }
       } else {
         setIsLoading(false);
