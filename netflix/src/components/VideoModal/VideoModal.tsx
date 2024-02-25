@@ -7,6 +7,8 @@ import clsx from "classnames";
 import Modal from "react-modal";
 
 import {Video} from "@/models/Video";
+import LikeIcon from "@/components/icons/LikeIcon/LikeIcon";
+import DislikeIcon from "@/components/icons/DislikeIcon/DislikeIcon";
 
 interface Props { video?: Video }
 
@@ -31,6 +33,19 @@ const VideoModal = (props: Props) => {
         src={`https://www.youtube.com/embed/${video.id}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
         frameBorder={0}
       ></iframe>
+
+      <div className={styles.likeDislikeBtnWrapper}>
+        <div className={styles.btnWrapper}>
+          <button>
+            <LikeIcon />
+          </button>
+        </div>
+        <div className={styles.btnWrapper}>
+          <button>
+            <DislikeIcon />
+          </button>
+        </div>
+      </div>
 
       <div className={styles.modalBody}>
         <div className={styles.modalBodyContent}>
