@@ -2,6 +2,7 @@
 
 import styles from "./VideoModal.module.css";
 
+import { useState } from "react";
 import {useRouter} from "next/navigation";
 import clsx from "classnames";
 import Modal from "react-modal";
@@ -14,7 +15,21 @@ interface Props { video?: Video }
 
 const VideoModal = (props: Props) => {
   const router = useRouter();
+  const [toggleLike, setToggleLike] = useState(false);
+  const [toggleDisLike, setToggleDisLike] = useState(false);
   const { video } = props;
+
+  const handleToggleDislike = async () => {
+    console.log("handleToggleDislike");
+    setToggleDisLike(!toggleDisLike);
+    setToggleLike(toggleDisLike);
+  };
+
+  const handleToggleLike = async () => {
+    console.log("handleToggleLike");
+    setToggleLike(!toggleLike);
+    setToggleDisLike(toggleLike);
+  };
 
   if (!video) return null;
   return (
@@ -36,15 +51,15 @@ const VideoModal = (props: Props) => {
 
       <div className={styles.likeDislikeBtnWrapper}>
         <div className={styles.likeBtnWrapper}>
-          <button>
+          <button onClick={handleToggleLike}>
             <div className={styles.btnWrapper}>
-              <LikeIcon />
+              <LikeIcon selected={toggleLike} />
             </div>
           </button>
         </div>
-        <button>
+        <button onClick={handleToggleDislike}>
           <div className={styles.btnWrapper}>
-            <DislikeIcon />
+            <DislikeIcon selected={toggleDisLike} />
           </div>
         </button>
       </div>
