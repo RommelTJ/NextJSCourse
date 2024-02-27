@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { findVideoIdByUser, updateStats, insertStats } from "@/lib/db/hasura";
 
 
-interface PostParams { videoId: string; }
+interface PostParams { videoId: string; favorited: number; watched: boolean; }
 
 export async function POST(request: NextRequest) {
   const tokenCookie = request.cookies.get("token");
@@ -14,12 +14,13 @@ export async function POST(request: NextRequest) {
   const tokenPayload = decodedToken as JwtPayload;
   const body: PostParams = await request.json();
   const userId = tokenPayload.issuer || "";
-  const videoId = body.videoId;
-  const doesStatsExist = await findVideoIdByUser(tokenCookie.value, userId, videoId);
+  const { videoId, favorited, watched = true} = body;
+  const token = tokenCookie.value;
+  const doesStatsExist = await findVideoIdByUser(token, userId, videoId);
 
   const response = doesStatsExist
-    ? await updateStats(tokenCookie.value, { watched: true, userId, videoId, favorited: 0 })
-    : await insertStats(tokenCookie.value, { watched: false, userId, videoId, favorited: 0 });
+    ? await updateStats(token, { favorited, userId, watched, videoId })
+    : await insertStats(token, { favorited, userId, watched, videoId });
 
   return NextResponse.json({ msg: "it works", response });
 }

@@ -1,6 +1,8 @@
 import { MagicUserMetadata } from "@magic-sdk/admin";
 
-export async function insertStats(token: string, { favorited = 0, userId, watched, videoId }) {
+type Stats = { favorited: number; userId: string; watched: boolean; videoId: string };
+
+export async function insertStats(token: string, { favorited, userId, watched, videoId }: Stats) {
   const operationsDoc = `
   mutation insertStats($favorited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
     insert_stats_one(object: {favorited: $favorited, userId: $userId, watched: $watched, videoId: $videoId}) {
@@ -19,7 +21,7 @@ export async function insertStats(token: string, { favorited = 0, userId, watche
   );
 }
 
-export async function updateStats(token: string, { favorited = 0, userId, watched, videoId }) {
+export async function updateStats(token: string, { favorited, userId, watched, videoId }: Stats) {
   const operationsDoc = `
 mutation updateStats($favorited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
   update_stats(
@@ -74,7 +76,7 @@ export async function findVideoIdByUser(token: string, userId: string, videoId: 
     },
     token
   );
-  return response.data.stats.length === 0;
+  return response.data.stats.length > 0;
 }
 
 export async function createNewUser(token: string, metadata: MagicUserMetadata) {
