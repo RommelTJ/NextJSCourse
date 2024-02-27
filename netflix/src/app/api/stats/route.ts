@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt, { JwtPayload } from "jsonwebtoken";
-
-import { findVideoIdByUser } from "@/lib/db/hasura";
+import { findVideoIdByUser, updateStats, insertStats } from "@/lib/db/hasura";
 
 
 interface PostParams { videoId: string; }
@@ -17,10 +16,10 @@ export async function POST(request: NextRequest) {
   const userId = tokenPayload.issuer || "";
   const videoId = body.videoId;
   const doesStatsExist = await findVideoIdByUser(tokenCookie.value, userId, videoId);
-  if (doesStatsExist) {
-    // update it
-  } else {
-    // add it
-  }
-  return NextResponse.json({ msg: "it works", decodedToken, doesStatsExist });
+
+  const response = doesStatsExist
+    ? await updateStats(tokenCookie.value, { watched: true, userId, videoId })
+    : await insertStats(tokenCookie.value, { watched: true, userId, videoId });
+
+  return NextResponse.json({ msg: "it works", response });
 }
