@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
   const doesStatsExist = await findVideoIdByUser(tokenCookie.value, userId, videoId);
 
   const response = doesStatsExist
-    ? await updateStats(tokenCookie.value, { watched: true, userId, videoId })
-    : await insertStats(tokenCookie.value, { watched: true, userId, videoId });
+    ? await updateStats(tokenCookie.value, { watched: true, userId, videoId, favorited: 0 })
+    : await insertStats(tokenCookie.value, { watched: false, userId, videoId, favorited: 0 });
 
   return NextResponse.json({ msg: "it works", response });
 }
