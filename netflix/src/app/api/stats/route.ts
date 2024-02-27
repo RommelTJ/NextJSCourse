@@ -16,6 +16,11 @@ export async function POST(request: NextRequest) {
   const body: PostParams = await request.json();
   const userId = tokenPayload.issuer || "";
   const videoId = body.videoId;
-  const findVideoId = await findVideoIdByUser(tokenCookie.value, userId, videoId);
-  return NextResponse.json({ msg: "it works", decodedToken, findVideoId });
+  const doesStatsExist = await findVideoIdByUser(tokenCookie.value, userId, videoId);
+  if (doesStatsExist) {
+    // update it
+  } else {
+    // add it
+  }
+  return NextResponse.json({ msg: "it works", decodedToken, doesStatsExist });
 }

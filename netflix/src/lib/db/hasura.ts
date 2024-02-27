@@ -1,5 +1,10 @@
 import { MagicUserMetadata } from "@magic-sdk/admin";
 
+type HasuraVideoIdByUserResponse = {
+  data: {
+    stats: object[];
+  }
+}
 
 export async function findVideoIdByUser(token: string, userId: string, videoId: string) {
   const operationsDoc = `
@@ -14,7 +19,7 @@ export async function findVideoIdByUser(token: string, userId: string, videoId: 
   }
 `;
 
-  return await queryHasuraGQL(
+  const response: HasuraVideoIdByUserResponse = await queryHasuraGQL(
     operationsDoc,
     "findVideoIdByUserId",
     {
@@ -23,6 +28,7 @@ export async function findVideoIdByUser(token: string, userId: string, videoId: 
     },
     token
   );
+  return response.data.stats.length === 0;
 }
 
 export async function createNewUser(token: string, metadata: MagicUserMetadata) {
