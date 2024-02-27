@@ -1,6 +1,6 @@
 import { MagicUserMetadata } from "@magic-sdk/admin";
 
-export async function insertStats(token: string, { favorited, userId, watched, videoId }) {
+export async function insertStats(token: string, { favorited = 0, userId, watched, videoId }) {
   const operationsDoc = `
   mutation insertStats($favorited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
     insert_stats_one(object: {favorited: $favorited, userId: $userId, watched: $watched, videoId: $videoId}) {
@@ -19,11 +19,11 @@ export async function insertStats(token: string, { favorited, userId, watched, v
   );
 }
 
-export async function updateStats(token: string, { favorited, userId, watched, videoId }) {
+export async function updateStats(token: string, { favorited = 0, userId, watched, videoId }) {
   const operationsDoc = `
 mutation updateStats($favorited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
   update_stats(
-    _set: {watched: $watched}, 
+    _set: {watched: $watched, favorited: $favorited}, 
     where: {
       userId: {_eq: $userId}, 
       videoId: {_eq: $videoId}
@@ -38,14 +38,12 @@ mutation updateStats($favorited: Int!, $userId: String!, $watched: Boolean!, $vi
 }
 `;
 
-  const response = await queryHasuraGQL(
+  return await queryHasuraGQL(
     operationsDoc,
     "updateStats",
     { favorited, userId, watched, videoId },
     token
   );
-
-  return response;
 }
 
 type HasuraVideoIdByUserResponse = {
