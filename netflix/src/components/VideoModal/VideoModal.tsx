@@ -20,16 +20,26 @@ const VideoModal = (props: Props) => {
   const { video } = props;
 
   const handleToggleDislike = async () => {
-    console.log("handleToggleDislike");
     setToggleDisLike(!toggleDisLike);
     setToggleLike(toggleDisLike);
+    if (video?.id) await updateStats(video.id, !toggleDisLike ? 0 : 1);
   };
 
   const handleToggleLike = async () => {
-    console.log("handleToggleLike");
     setToggleLike(!toggleLike);
     setToggleDisLike(toggleLike);
+    if (video?.id) await updateStats(video.id, !toggleLike ? 1 : 0);
   };
+
+  const updateStats = async (videoId: string, favorited: number) => {
+    return await fetch("/api/stats", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ videoId, favorited })
+    });
+  }
 
   if (!video) return null;
   return (
