@@ -2,14 +2,15 @@
 
 import styles from "./VideoModal.module.css";
 
-import { useState } from "react";
-import {useRouter} from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import clsx from "classnames";
 import Modal from "react-modal";
 
 import {Video} from "@/models/Video";
 import LikeIcon from "@/components/icons/LikeIcon/LikeIcon";
 import DislikeIcon from "@/components/icons/DislikeIcon/DislikeIcon";
+import { Stats } from "@/lib/db/hasura";
 
 interface Props { video?: Video }
 
@@ -18,6 +19,20 @@ const VideoModal = (props: Props) => {
   const [toggleLike, setToggleLike] = useState(false);
   const [toggleDisLike, setToggleDisLike] = useState(false);
   const { video } = props;
+
+  useEffect(() => {
+    const handleLikeDislikeService = async () => {
+      const response = await fetch(`/api/stats?videoId=${video?.id || ""}`);
+      const jsonBody = await response.json() as { data?: Stats } | undefined;
+      if (!!jsonBody && !!jsonBody.data) {
+        const { favorited } = jsonBody.data;
+        if (favorited == 1) setToggleLike(true);
+        else if (favorited == 0) setToggleDisLike(true);
+      }
+    };
+
+    handleLikeDislikeService().then();
+  }, [video]);
 
   const handleToggleDislike = async () => {
     setToggleDisLike(!toggleDisLike);
@@ -49,6 +64,7 @@ const VideoModal = (props: Props) => {
       onRequestClose={() => router.back()}
       className={styles.modal}
       overlayClassName={styles.overlay}
+      ariaHideApp={false}
     >
       <iframe
         className={styles.videoPlayer}

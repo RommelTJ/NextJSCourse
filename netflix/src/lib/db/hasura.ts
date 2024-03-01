@@ -1,6 +1,6 @@
 import { MagicUserMetadata } from "@magic-sdk/admin";
 
-type Stats = { favorited: number; userId: string; watched: boolean; videoId: string };
+export type Stats = { favorited: number; userId: string; watched: boolean; videoId: string };
 
 export async function insertStats(token: string, { favorited, userId, watched, videoId }: Stats) {
   const operationsDoc = `
@@ -76,7 +76,7 @@ export async function findVideoIdByUser(token: string, userId: string, videoId: 
     },
     token
   );
-  return response.data.stats.length > 0;
+  return response.data.stats;
 }
 
 export async function createNewUser(token: string, metadata: MagicUserMetadata) {

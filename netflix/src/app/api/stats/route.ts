@@ -25,8 +25,8 @@ export async function POST(request: NextRequest) {
   const cookieData = getTokenFromCookie(request);
   if (!cookieData) return NextResponse.json({}, { status: 403 });
   const { token, userId } = cookieData;
-  const hasVideoStats = await findVideoIdByUser(token, userId, videoId);
-  const response = hasVideoStats
+  const stats = await findVideoIdByUser(token, userId, videoId);
+  const response = stats.length > 0
     ? await updateStats(token, { favorited, userId, watched, videoId })
     : await insertStats(token, { favorited, userId, watched, videoId });
 
@@ -40,10 +40,7 @@ export async function GET(request: NextRequest) {
   const cookieData = getTokenFromCookie(request);
   if (!cookieData) return NextResponse.json({}, { status: 403 });
   const { token, userId } = cookieData;
-  const hasVideoStats = await findVideoIdByUser(token, userId, videoId);
-  if (hasVideoStats) {
-    return NextResponse.json({ data: hasVideoStats });
-  } else {
-    return NextResponse.json({ data: hasVideoStats }, { status: 404 });
-  }
+  const data = await findVideoIdByUser(token, userId, videoId);
+  if (data.length > 0) return NextResponse.json({data: data[0]});
+  else return NextResponse.json({}, { status: 404 });
 }
