@@ -1,5 +1,5 @@
 import { Video } from "@/models/Video";
-import { getWatchedVideos } from "@/lib/db/hasura";
+import { getWatchedVideos, getMyListVideos } from "@/lib/db/hasura";
 
 interface YoutubeVideo {
   snippet: {
@@ -69,4 +69,16 @@ export const getWatchItAgainVideos = async (userId: string, token: string): Prom
       imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`
     }
   }) || [];
+};
+
+export const getMyList = async (userId: string, token: string): Promise<Video[]> => {
+  const videos = await getMyListVideos(userId, token) as { videoId: string }[];
+  return (
+    videos?.map((video) => {
+      return {
+        id: video.videoId,
+        imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+      };
+    }) || []
+  );
 };
