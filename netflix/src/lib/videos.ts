@@ -1,4 +1,5 @@
 import { Video } from "@/models/Video";
+import { getWatchedVideos, getMyListVideos } from "@/lib/db/hasura";
 
 interface YoutubeVideo {
   snippet: {
@@ -30,7 +31,7 @@ export const getCommonVideos = async (url: string, revalidate?: { revalidate: nu
       const id = typeof item.id == "string" ? item.id : item.id.videoId;
       return {
         title: item.snippet.localized?.title || item.snippet.title,
-        imgUrl: item.snippet.thumbnails.high.url,
+        imgUrl: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
         id,
         description: item.snippet.localized?.description || item.snippet.description,
         publishTime: item.snippet.publishedAt,
@@ -58,4 +59,26 @@ export const getPopularVideos = (): Promise<Video[]> => {
 export const getYoutubeVideoById = (videoId: string): Promise<Video[]> => {
   const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
   return getCommonVideos(URL, { revalidate: 10 });
+};
+
+export const getWatchItAgainVideos = async (userId: string, token: string): Promise<Video[]> => {
+  const videos = await getWatchedVideos(userId, token) as { videoId: string }[];
+  return videos?.map((video) => {
+    return {
+      id: video.videoId,
+      imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`
+    }
+  }) || [];
+};
+
+export const getMyList = async (userId: string, token: string): Promise<Video[]> => {
+  const videos = await getMyListVideos(userId, token) as { videoId: string }[];
+  return (
+    videos?.map((video) => {
+      return {
+        id: video.videoId,
+        imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+      };
+    }) || []
+  );
 };
