@@ -15,7 +15,6 @@ const Home = async () => {
   const userId = "";
   const token = "";
   const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
-  console.log("watchItAgainVideos", watchItAgainVideos);
 
   return (
     <LoginRouter
@@ -31,6 +30,7 @@ const Home = async () => {
 
         <div className={styles.sectionWrapper}>
           <CardSection title="Disney" videos={disneyVideos} size="large" />
+          <CardSection title="Watch it again" videos={watchItAgainVideos} size="small" />
           <CardSection title="Travel" videos={travelVideos} size="small" />
           <CardSection title="Productivity" videos={productivityVideos} size="medium" />
           <CardSection title="Popular" videos={popularVideos} size="small" />
