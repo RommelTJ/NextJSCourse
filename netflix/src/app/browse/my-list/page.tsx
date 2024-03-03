@@ -26,7 +26,7 @@ const MyList = async () => {
     <main className={styles.main}>
       <NavBar />
       <div className={styles.sectionWrapper}>
-        <CardSection title="My List" size="small" videos={myListVideos} />
+        <CardSection title="My List" size="small" videos={myListVideos} shouldWrap shouldScale={false} />
       </div>
     </main>
   );
