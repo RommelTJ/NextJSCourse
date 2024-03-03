@@ -153,8 +153,7 @@ export async function getWatchedVideos(userId: string, token: string) {
       watched: {_eq: true}, 
       userId: {_eq: $userId},
     }) {
-      videoId
-      watched
+      videoId  
     }
   }
 `;

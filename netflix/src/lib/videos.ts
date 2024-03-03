@@ -1,4 +1,5 @@
 import { Video } from "@/models/Video";
+import { getWatchedVideos } from "@/lib/db/hasura";
 
 interface YoutubeVideo {
   snippet: {
@@ -58,4 +59,8 @@ export const getPopularVideos = (): Promise<Video[]> => {
 export const getYoutubeVideoById = (videoId: string): Promise<Video[]> => {
   const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
   return getCommonVideos(URL, { revalidate: 10 });
+};
+
+export const getWatchItAgainVideos = async (userId: string, token: string) => {
+  return await getWatchedVideos(userId, token);
 };

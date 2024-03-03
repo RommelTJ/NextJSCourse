@@ -2,7 +2,7 @@ import styles from "./page.module.css";
 import NavBar from "@/components/NavBar/NavBar";
 import Banner from "@/components/Banner/Banner";
 import CardSection from "@/components/CardSection/CardSection";
-import {getPopularVideos, getVideos} from "@/lib/videos";
+import { getPopularVideos, getVideos, getWatchItAgainVideos } from "@/lib/videos";
 import { Video } from "@/models/Video";
 import LoginRouter from "@/components/LoginRouter/LoginRouter";
 
@@ -11,6 +11,11 @@ const Home = async () => {
   const productivityVideos: Video[] = await getVideos("Productivity");
   const travelVideos: Video[] = await getVideos("Travel");
   const popularVideos: Video[] = await getPopularVideos();
+
+  const userId = "";
+  const token = "";
+  const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
+  console.log("watchItAgainVideos", watchItAgainVideos);
 
   return (
     <LoginRouter
