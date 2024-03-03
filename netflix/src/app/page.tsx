@@ -8,10 +8,13 @@ import { getPopularVideos, getVideos, getWatchItAgainVideos } from "@/lib/videos
 import { Video } from "@/models/Video";
 import LoginRouter from "@/components/LoginRouter/LoginRouter";
 import { getTokenFromCookie } from "@/app/api/stats/route";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import {router} from "next/client";
 
 
-async function getWatchItAgainVids() {
-  const cookieData = getTokenFromCookie(cookies().get('token'));
+async function getWatchItAgainVideosData() {
+  const cookie: RequestCookie | undefined = cookies().get('token');
+  const cookieData = getTokenFromCookie(cookie);
   if (!cookieData) return [];
   const { token, userId } = cookieData;
   return await getWatchItAgainVideos(userId, token);
@@ -22,7 +25,7 @@ const Home = async () => {
   const productivityVideos: Video[] = await getVideos("Productivity");
   const travelVideos: Video[] = await getVideos("Travel");
   const popularVideos: Video[] = await getPopularVideos();
-  const watchItAgainVideos: Video[] = await getWatchItAgainVids()
+  const watchItAgainVideos: Video[] = await getWatchItAgainVideosData()
 
   return (
     <LoginRouter

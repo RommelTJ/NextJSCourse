@@ -62,7 +62,7 @@ export const getYoutubeVideoById = (videoId: string): Promise<Video[]> => {
 };
 
 export const getWatchItAgainVideos = async (userId: string, token: string): Promise<Video[]> => {
-  const videos = await getWatchedVideos(userId, token);
+  const videos = await getWatchedVideos(userId, token) as { videoId: string }[];
   return videos?.map((video) => {
     return {
       id: video.videoId,

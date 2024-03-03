@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { findVideoIdByUser, updateStats, insertStats } from "@/lib/db/hasura";
-import {RequestCookies} from "next/dist/compiled/@edge-runtime/cookies";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 
-export const getTokenFromCookie = (tokenCookie?: RequestCookies): { token: string; userId: string; } | undefined => {
+export const getTokenFromCookie = (tokenCookie?: RequestCookie): { token: string; userId: string; } | undefined => {
   if (tokenCookie) {
     const decodedToken: JwtPayload | string = jwt.verify(tokenCookie.value, process.env.HASURA_JWT_SECRET_KEY || "");
     if (typeof decodedToken === "string") return undefined;
