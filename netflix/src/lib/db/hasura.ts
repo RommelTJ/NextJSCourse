@@ -145,3 +145,28 @@ async function queryHasuraGQL(operationsDoc: string, operationName: string, vari
 
   return await result.json();
 }
+
+export async function getWatchedVideos(userId: string, token: string) {
+  const operationsDoc = `
+  query watchedVideos($userId: String!) {
+    stats(where: {
+      watched: {_eq: true}, 
+      userId: {_eq: $userId},
+    }) {
+      videoId
+      watched
+    }
+  }
+`;
+
+  const response = await queryHasuraGQL(
+    operationsDoc,
+    "watchedVideos",
+    {
+      userId,
+    },
+    token
+  );
+
+  return response.data.stats;
+}
