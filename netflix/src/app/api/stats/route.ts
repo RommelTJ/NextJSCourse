@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { findVideoIdByUser, updateStats, insertStats } from "@/lib/db/hasura";
+import {RequestCookies} from "next/dist/compiled/@edge-runtime/cookies";
 
 
-const getTokenFromCookie = (request: NextRequest): { token: string; userId: string; } | undefined => {
-  const tokenCookie = request.cookies.get("token");
+export const getTokenFromCookie = (tokenCookie?: RequestCookies): { token: string; userId: string; } | undefined => {
   if (tokenCookie) {
     const decodedToken: JwtPayload | string = jwt.verify(tokenCookie.value, process.env.HASURA_JWT_SECRET_KEY || "");
     if (typeof decodedToken === "string") return undefined;
@@ -22,7 +22,7 @@ interface PostParams { videoId: string; favorited: number; watched: boolean; }
 export async function POST(request: NextRequest) {
   const body: PostParams = await request.json();
   const { videoId, favorited, watched = true} = body;
-  const cookieData = getTokenFromCookie(request);
+  const cookieData = getTokenFromCookie(request.cookies.get("token"));
   if (!cookieData) return NextResponse.json({}, { status: 403 });
   const { token, userId } = cookieData;
   const stats = await findVideoIdByUser(token, userId, videoId);
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const videoId = searchParams.get("videoId");
   if (!videoId) return NextResponse.json({}, { status: 400 });
-  const cookieData = getTokenFromCookie(request);
+  const cookieData = getTokenFromCookie(request.cookies.get("token"));
   if (!cookieData) return NextResponse.json({}, { status: 403 });
   const { token, userId } = cookieData;
   const data = await findVideoIdByUser(token, userId, videoId);

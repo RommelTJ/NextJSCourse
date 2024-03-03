@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers'
+
 import styles from "./page.module.css";
 import NavBar from "@/components/NavBar/NavBar";
 import Banner from "@/components/Banner/Banner";
@@ -5,16 +7,22 @@ import CardSection from "@/components/CardSection/CardSection";
 import { getPopularVideos, getVideos, getWatchItAgainVideos } from "@/lib/videos";
 import { Video } from "@/models/Video";
 import LoginRouter from "@/components/LoginRouter/LoginRouter";
+import { getTokenFromCookie } from "@/app/api/stats/route";
+
+
+async function getWatchItAgainVids() {
+  const cookieData = getTokenFromCookie(cookies().get('token'));
+  if (!cookieData) return [];
+  const { token, userId } = cookieData;
+  return await getWatchItAgainVideos(userId, token);
+}
 
 const Home = async () => {
   const disneyVideos: Video[] = await getVideos("Disney Trailer");
   const productivityVideos: Video[] = await getVideos("Productivity");
   const travelVideos: Video[] = await getVideos("Travel");
   const popularVideos: Video[] = await getPopularVideos();
-
-  const userId = "";
-  const token = "";
-  const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
+  const watchItAgainVideos: Video[] = await getWatchItAgainVids()
 
   return (
     <LoginRouter
