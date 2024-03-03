@@ -9,7 +9,6 @@ import { Video } from "@/models/Video";
 import LoginRouter from "@/components/LoginRouter/LoginRouter";
 import { getTokenFromCookie } from "@/app/api/stats/route";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import {router} from "next/client";
 
 
 async function getWatchItAgainVideosData() {
