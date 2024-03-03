@@ -167,5 +167,5 @@ export async function getWatchedVideos(userId: string, token: string) {
     token
   );
 
-  return response.data.stats;
+  return response.data?.stats;
 }
