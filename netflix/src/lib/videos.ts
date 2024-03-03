@@ -31,7 +31,7 @@ export const getCommonVideos = async (url: string, revalidate?: { revalidate: nu
       const id = typeof item.id == "string" ? item.id : item.id.videoId;
       return {
         title: item.snippet.localized?.title || item.snippet.title,
-        imgUrl: item.snippet.thumbnails.high.url,
+        imgUrl: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
         id,
         description: item.snippet.localized?.description || item.snippet.description,
         publishTime: item.snippet.publishedAt,
@@ -63,5 +63,10 @@ export const getYoutubeVideoById = (videoId: string): Promise<Video[]> => {
 
 export const getWatchItAgainVideos = async (userId: string, token: string) => {
   const videos = await getWatchedVideos(userId, token);
-  return videos?.map((video) => { return { id: video.videoId } }) || [];
+  return videos?.map((video) => {
+    return {
+      id: video.videoId,
+      imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`
+    }
+  }) || [];
 };
